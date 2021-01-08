@@ -1,0 +1,37 @@
+#ifndef LOCKDOWNSSL_ICIPHER
+#define LOCKDOWNSSL_ICIPHER
+
+#include "types.h"
+
+namespace LockdownSSL
+{
+	namespace Cipher
+	{
+		class ICipher
+		{
+		public:
+			virtual void encrypt(byte* Data) = 0;
+			virtual void decrypt(byte* Data) = 0;
+			virtual const int getBlockSize() = 0;
+
+		protected:
+			ICipher(){}
+		};
+
+		class ICipher_128b :public ICipher
+		{
+		public:
+			const int getBlockSize() { return 16; }
+
+		protected:
+			ICipher_128b() {};
+		};
+	}
+
+	enum class OperationMode { Encrypt, Decrypt };
+
+	/*
+	std::vector<byte> gcm_encrypt(ICipher& Cipher, std::vector<byte> Data, std::vector<byte> AdditionalData, byte IV[12]);*/
+}
+
+#endif

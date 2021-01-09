@@ -92,34 +92,43 @@ namespace LockdownSSL
 			std::vector<byte> outBuffer;
 		};
 
-		// class CTR
-		// {
-		// public:
-		// 	CTR(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Nonce, unsigned int ctrBytes_Size);
+		class CTR
+		{
+		public:
+			CTR(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte>& Nonce);
 
-		// 	std::vector<byte> stream(std::vector<byte>& data);
-		// 	std::vector<byte> stream(byte data);
+			~CTR()
+			{
+				delete[] nonce;
+				delete[] ctr;
+			}
 
-		// 	CTR& operator <<(byte& data)
-		// 	{
-		// 		stream(data);
-		// 		return *this;
-		// 	}
+			void stream(std::vector<byte>& data);
+			void stream(byte& data);
 
-		// 	CTR& operator <<(std::vector<byte>& data)
-		// 	{
-		// 		stream(data);
-		// 		return *this;
-		// 	}
+			CTR& operator <<(std::vector<byte>& data)
+			{
+				stream(data);
+				return *this;
+			}
 
-		// 	std::vector<byte> getOutput();
+			CTR& operator <<(byte& data)
+			{
+				stream(data);
+				return *this;
+			}
 
-		// private:
-		// 	std::vector<byte> buffer;
-		// 	std::vector<byte> nonce;
-		// 	LockdownSSL::Cipher::ICipher& cipher;
-		// 	unsigned int ctrBytes_size;
-		// };
+			std::vector<byte> getOutput();
+
+		private:
+			LockdownSSL::Cipher::ICipher& cipher;
+			byte* nonce;
+
+			byte* ctr;
+			byte ctrptr;
+
+			std::vector<byte> outBuffer;
+		};
 	}
 }
 

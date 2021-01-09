@@ -40,7 +40,7 @@ namespace LockdownSSL
 			};
 
 			std::vector<byte> sha224_res_1 = sha224_instance.getHash(sha224_data_1);
-			for (size_t i = 0; i < sha224_out_1.size(); i++)
+			for (word32 i = 0; i < sha224_out_1.size(); i++)
 			{
 				if (sha224_out_1[i] != sha224_res_1[i])
 				{
@@ -52,7 +52,7 @@ namespace LockdownSSL
 			std::cout << "Sha224 Test 1 Passed!" << std::endl;
 
 			std::vector<byte> sha224_res_2 = sha224_instance.getHash(sha224_data_2);
-			for (size_t i = 0; i < sha224_out_2.size(); i++)
+			for (word32 i = 0; i < sha224_out_2.size(); i++)
 			{
 				if (sha224_out_2[i] != sha224_res_2[i])
 				{
@@ -102,7 +102,7 @@ namespace LockdownSSL
 			};
 
 			std::vector<byte> sha256_res_1 = sha256_instance.getHash(sha256_data_1);
-			for (size_t i = 0; i < sha256_out_1.size(); i++)
+			for (word32 i = 0; i < sha256_out_1.size(); i++)
 			{
 				if (sha256_out_1[i] != sha256_res_1[i])
 				{
@@ -114,7 +114,7 @@ namespace LockdownSSL
 			std::cout << "Sha256 Test 1 Passed!" << std::endl;
 
 			std::vector<byte> sha256_res_2 = sha256_instance.getHash(sha256_data_2);
-			for (size_t i = 0; i < sha256_out_2.size(); i++)
+			for (word32 i = 0; i < sha256_out_2.size(); i++)
 			{
 				if (sha256_out_2[i] != sha256_res_2[i])
 				{
@@ -176,7 +176,7 @@ namespace LockdownSSL
 			};
 
 			std::vector<byte> sha384_res_1 = sha384_instance.getHash(sha384_data_1);
-			for (size_t i = 0; i < sha384_out_1.size(); i++)
+			for (word32 i = 0; i < sha384_out_1.size(); i++)
 			{
 				if (sha384_out_1[i] != sha384_res_1[i])
 				{
@@ -188,7 +188,7 @@ namespace LockdownSSL
 			std::cout << "Sha384 Test 1 Passed!" << std::endl;
 
 			std::vector<byte> sha384_res_2 = sha384_instance.getHash(sha384_data_2);
-			for (size_t i = 0; i < sha384_out_2.size(); i++)
+			for (word32 i = 0; i < sha384_out_2.size(); i++)
 			{
 				if (sha384_out_2[i] != sha384_res_2[i])
 				{
@@ -252,7 +252,7 @@ namespace LockdownSSL
 			};
 
 			std::vector<byte> sha512_res_1 = sha512_instance.getHash(sha512_data_1);
-			for (size_t i = 0; i < sha512_out_1.size(); i++)
+			for (word32 i = 0; i < sha512_out_1.size(); i++)
 			{
 				if (sha512_out_1[i] != sha512_res_1[i])
 				{
@@ -264,7 +264,7 @@ namespace LockdownSSL
 			std::cout << "Sha512 Test 1 Passed!" << std::endl;
 
 			std::vector<byte> sha512_res_2 = sha512_instance.getHash(sha512_data_2);
-			for (size_t i = 0; i < sha512_out_2.size(); i++)
+			for (word32 i = 0; i < sha512_out_2.size(); i++)
 			{
 				if (sha512_out_2[i] != sha512_res_2[i])
 				{
@@ -320,7 +320,7 @@ namespace LockdownSSL
 			};
 
 			std::vector<byte> sha512_224_res_1 = sha512_224_instance.getHash(sha512_224_data_1);
-			for (size_t i = 0; i < sha512_224_out_1.size(); i++)
+			for (word32 i = 0; i < sha512_224_out_1.size(); i++)
 			{
 				if (sha512_224_out_1[i] != sha512_224_res_1[i])
 				{
@@ -332,7 +332,7 @@ namespace LockdownSSL
 			std::cout << "Sha512_224 Test 1 Passed!" << std::endl;
 
 			std::vector<byte> sha512_224_res_2 = sha512_224_instance.getHash(sha512_224_data_2);
-			for (size_t i = 0; i < sha512_224_out_2.size(); i++)
+			for (word32 i = 0; i < sha512_224_out_2.size(); i++)
 			{
 				if (sha512_224_out_2[i] != sha512_224_res_2[i])
 				{
@@ -390,7 +390,7 @@ namespace LockdownSSL
 			};
 
 			std::vector<byte> sha512_256_res_1 = sha512_256_instance.getHash(sha512_256_data_1);
-			for (size_t i = 0; i < sha512_256_out_1.size(); i++)
+			for (word32 i = 0; i < sha512_256_out_1.size(); i++)
 			{
 				if (sha512_256_out_1[i] != sha512_256_res_1[i])
 				{
@@ -402,7 +402,7 @@ namespace LockdownSSL
 			std::cout << "Sha512_256 Test 1 Passed!" << std::endl;
 
 			std::vector<byte> sha512_256_res_2 = sha512_256_instance.getHash(sha512_256_data_2);
-			for (size_t i = 0; i < sha512_256_out_2.size(); i++)
+			for (word32 i = 0; i < sha512_256_out_2.size(); i++)
 			{
 				if (sha512_256_out_2[i] != sha512_256_res_2[i])
 				{

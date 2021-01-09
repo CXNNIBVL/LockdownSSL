@@ -1,5 +1,4 @@
-#ifndef LOCKDOWNSSL_EXCEPTION
-#define LOCKDOWNSSL_EXCEPTION
+#pragma once
 
 #include <string>
 #include <stdexcept>
@@ -21,7 +20,7 @@ namespace LockdownSSL
 
 			virtual ~Exception() throw() {}
 
-			explicit Exception(ErrorType errorType, const std::string& s) : errType(errorType), std::runtime_error("LockdownSSLException: " + s) {}
+			explicit Exception(ErrorType errorType, const std::string& s) : std::runtime_error("LockdownSSLException: " + s), errType(errorType){}
 
 			ErrorType GetErrorType() const { return errType; }
 
@@ -42,5 +41,3 @@ namespace LockdownSSL
 		};
 	}
 }
-
-#endif

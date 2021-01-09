@@ -55,70 +55,66 @@ byte* cmac_genSubkey(LockdownSSL::Cipher::ICipher& Cipher, int flag)
 	return K;
 }
 
-namespace LockdownSSL
+using namespace LockdownSSL::EncryptionModes;
+
+std::vector<byte> CMAC::getMac(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> data)
 {
-	namespace EncryptionModes
+	int subkey_flag;
+	word64 size_padding;
+	word64 dataSize = data.size();
+	int blockSize = Cipher.getBlockSize();
+	
+	if (dataSize == 0) { size_padding = blockSize; subkey_flag = 1; }
+	else if ((dataSize % blockSize) == 0 && dataSize > 0) { size_padding = 0; subkey_flag = 0; }
+	else
 	{
-		std::vector<byte> CMAC::getMac(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> data)
-		{
-			int subkey_flag;
-			word64 size_padding;
-			word64 dataSize = data.size();
-			int blockSize = Cipher.getBlockSize();
-			
-			if (dataSize == 0) { size_padding = blockSize; subkey_flag = 1; }
-			else if ((dataSize % blockSize) == 0 && dataSize > 0) { size_padding = 0; subkey_flag = 0; }
-			else
-			{
-				size_padding = blockSize - (dataSize % blockSize);
-				subkey_flag = 1;
-			}
-			
-			if (size_padding != 0)
-			{
-				cmac_padding(size_padding, data);
-			}
-			
-			byte* subkey = cmac_genSubkey(Cipher, subkey_flag);
-			
-			size_t num_parts = data.size() / blockSize;
-			byte* tag = new byte[blockSize];
-			
-			for (int i = 0; i < blockSize; i++)
-			{
-				tag[i] = data[i];
-			}
-			
-			for (size_t i = 0; i < num_parts; i++)
-			{
-				if (i != 0)
-				{
-					for (int b = 0; b < blockSize; b++)
-					{
-						tag[b] ^= data[(i * blockSize) + b];
-					}
-				}
-			
-				if (i == num_parts - 1)
-				{
-					for (int c = 0; c < blockSize; c++)
-					{
-						tag[c] ^= subkey[c];
-					}
-				}
-			
-				Cipher.encrypt(tag);
-			}
-			
-			delete[] subkey;
-			
-			auto out = std::vector<byte>(blockSize);
-			for (int i = 0; i < blockSize; i++)
-			{
-				out[i] = tag[i];
-			}
-			
-			return out;
-		}
+		size_padding = blockSize - (dataSize % blockSize);
+		subkey_flag = 1;
 	}
+	
+	if (size_padding != 0)
+	{
+		cmac_padding(size_padding, data);
+	}
+	
+	byte* subkey = cmac_genSubkey(Cipher, subkey_flag);
+	
+	word32 num_parts = data.size() / blockSize;
+	byte* tag = new byte[blockSize];
+	
+	for (int i = 0; i < blockSize; i++)
+	{
+		tag[i] = data[i];
+	}
+	
+	for (word32 i = 0; i < num_parts; i++)
+	{
+		if (i != 0)
+		{
+			for (int b = 0; b < blockSize; b++)
+			{
+				tag[b] ^= data[(i * blockSize) + b];
+			}
+		}
+	
+		if (i == num_parts - 1)
+		{
+			for (int c = 0; c < blockSize; c++)
+			{
+				tag[c] ^= subkey[c];
+			}
+		}
+	
+		Cipher.encrypt(tag);
+	}
+	
+	delete[] subkey;
+	
+	auto out = std::vector<byte>(blockSize);
+	for (int i = 0; i < blockSize; i++)
+	{
+		out[i] = tag[i];
+	}
+	
+	return out;
 }

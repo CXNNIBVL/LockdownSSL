@@ -389,57 +389,53 @@ byte* KeyExpansion(byte* key, int keyBytesToGenerate, int KeySize)
 	return exp_keys;
 }
 
-namespace LockdownSSL
+using namespace LockdownSSL::Cipher;
+
+void Aes::encrypt(byte* state)
 {
-	namespace Cipher
+	Add_Roundkey(state, expandedKeys);
+
+	for (int i = 0; i < (numRounds - 1); i++)
 	{
-		void Aes::encrypt(byte* state)
-		{
-			Add_Roundkey(state, expandedKeys);
-
-			for (int i = 0; i < (numRounds - 1); i++)
-			{
-				Sub_Bytes_ENC(state);
-				Shift_Rows_ENC(state);
-				Mix_Columns_ENC(state);
-				Add_Roundkey(state, expandedKeys + (16 * (i + 1)));
-			}
-
-			Sub_Bytes_ENC(state);
-			Shift_Rows_ENC(state);
-			Add_Roundkey(state, expandedKeys + (expKeyBytes - 16));
-		}
-
-		void Aes::decrypt(byte* state)
-		{
-			Add_Roundkey(state, expandedKeys + (expKeyBytes - 16));
-			Sub_Bytes_DEC(state);
-			Shift_Rows_DEC(state);
-
-			for (int i = (numRounds - 1); i > 0; i--)
-			{
-				Add_Roundkey(state, expandedKeys + (i * 16));
-				Mix_Columns_DEC(state);
-				Sub_Bytes_DEC(state);
-				Shift_Rows_DEC(state);
-			}
-
-			Add_Roundkey(state, expandedKeys);
-		}
-
-		Aes Aes::getInstance_128(byte key[16])
-		{
-			return Aes(176, KeyExpansion(key, 176, 16), 10);
-		}
-
-		Aes Aes::getInstance_192(byte key[24])
-		{
-			return Aes(208, KeyExpansion(key, 208, 24), 12);
-		}
-
-		Aes Aes::getInstance_256(byte key[32])
-		{
-			return Aes(240, KeyExpansion(key, 240, 32), 14);
-		}
+		Sub_Bytes_ENC(state);
+		Shift_Rows_ENC(state);
+		Mix_Columns_ENC(state);
+		Add_Roundkey(state, expandedKeys + (16 * (i + 1)));
 	}
+
+	Sub_Bytes_ENC(state);
+	Shift_Rows_ENC(state);
+	Add_Roundkey(state, expandedKeys + (expKeyBytes - 16));
+}
+
+void Aes::decrypt(byte* state)
+{
+	Add_Roundkey(state, expandedKeys + (expKeyBytes - 16));
+	Sub_Bytes_DEC(state);
+	Shift_Rows_DEC(state);
+
+	for (int i = (numRounds - 1); i > 0; i--)
+	{
+		Add_Roundkey(state, expandedKeys + (i * 16));
+		Mix_Columns_DEC(state);
+		Sub_Bytes_DEC(state);
+		Shift_Rows_DEC(state);
+	}
+
+	Add_Roundkey(state, expandedKeys);
+}
+
+Aes Aes::getInstance_128(byte key[16])
+{
+	return Aes(176, KeyExpansion(key, 176, 16), 10);
+}
+
+Aes Aes::getInstance_192(byte key[24])
+{
+	return Aes(208, KeyExpansion(key, 208, 24), 12);
+}
+
+Aes Aes::getInstance_256(byte key[32])
+{
+	return Aes(240, KeyExpansion(key, 240, 32), 14);
 }

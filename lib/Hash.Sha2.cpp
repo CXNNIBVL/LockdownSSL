@@ -82,8 +82,8 @@ inline word64 right_rot_64(word64 value, unsigned int count)
 
 void padding(std::vector<byte>& data, int chunksize)
 {
-	size_t initial_size = data.size();
-	size_t pad_size;
+	word32 initial_size = data.size();
+	word32 pad_size;
 	word64 length_bits;
 	byte* length_bytes;
 
@@ -121,7 +121,7 @@ void padding(std::vector<byte>& data, int chunksize)
 	}
 }
 
-void compress_32b(std::vector<byte>& data, size_t part, std::vector<word32>& h, std::vector<word32> k)
+void compress_32b(std::vector<byte>& data, word32 part, std::vector<word32>& h, std::vector<word32> k)
 {
 	byte msg[64];
 	word32 w[64];
@@ -186,7 +186,7 @@ std::vector<byte> extract_32b(std::vector<word32>& h, int ommit)
 	std::vector<byte> U8_h = std::vector<byte>(num_elements);
 	byte tmp_store[4];
 
-	size_t ctr = 0;
+	word32 ctr = 0;
 	for (int i = 0; i < 8 && ctr < num_elements; i++)
 	{
 		word32 tmp = h[i];
@@ -215,9 +215,9 @@ std::vector<byte> getHash_32b(std::vector<byte> Data, std::vector<word32> h, int
 
 	padding(*data, chunksize);
 
-	size_t num_parts = (*data).size() / chunksize;
+	word32 num_parts = (*data).size() / chunksize;
 
-	for (size_t i = 0; i < num_parts; i++)
+	for (word32 i = 0; i < num_parts; i++)
 	{
 		compress_32b(*data, i, *h_buf, k);
 	}
@@ -230,7 +230,7 @@ std::vector<byte> getHash_32b(std::vector<byte> Data, std::vector<word32> h, int
 	return out;
 }
 
-void compress_64b(std::vector<byte>& data, size_t part, std::vector<word64>& h, std::vector<word64> k)
+void compress_64b(std::vector<byte>& data, word32 part, std::vector<word64>& h, std::vector<word64> k)
 {
 	byte msg[128];
 	word64 w[80];
@@ -295,7 +295,7 @@ std::vector<byte> extract_64b(std::vector<word64>& h, int ommit)
 	std::vector<byte> U8_h = std::vector<byte>(num_elements);
 	byte tmp_store[8];
 
-	size_t ctr = 0;
+	word32 ctr = 0;
 	for (int i = 0; i < 8 && ctr < num_elements; i++)
 	{
 		word64 tmp = h[i];
@@ -327,9 +327,9 @@ std::vector<byte> getHash_64b(std::vector<byte> Data, std::vector<word64> h, int
 
 	padding(*data, chunksize);
 
-	size_t num_parts = (*data).size() / chunksize;
+	word32 num_parts = (*data).size() / chunksize;
 
-	for (size_t i = 0; i < num_parts; i++)
+	for (word32 i = 0; i < num_parts; i++)
 	{
 		compress_64b(*data, i, *h_buf, k);
 	}
@@ -342,59 +342,55 @@ std::vector<byte> getHash_64b(std::vector<byte> Data, std::vector<word64> h, int
 	return out;
 }
 
-namespace LockdownSSL
+using namespace LockdownSSL::Hash;
+
+Sha2::Sha2(bool Is32bInstance, int Ommit_H, std::vector<word32> Hbuf_32b, std::vector<word64> Hbuf_64b, int Blocksize)
 {
-	namespace Hash
-	{
-		Sha2::Sha2(bool Is32bInstance, int Ommit_H, std::vector<word32> Hbuf_32b, std::vector<word64> Hbuf_64b, int Blocksize)
-		{
-			is32bInstance = Is32bInstance;
-			ommit_H = Ommit_H;
-			hbuf_32b = Hbuf_32b;
-			hbuf_64b = Hbuf_64b;
-			blockSize = Blocksize;
-		}
+	is32bInstance = Is32bInstance;
+	ommit_H = Ommit_H;
+	hbuf_32b = Hbuf_32b;
+	hbuf_64b = Hbuf_64b;
+	blockSize = Blocksize;
+}
 
-		std::vector<byte> Sha2::getHash(std::vector<byte> data)
-		{
-			return is32bInstance ? getHash_32b(data, hbuf_32b, ommit_H, blockSize) : getHash_64b(data, hbuf_64b, ommit_H, blockSize);
-		}
+std::vector<byte> Sha2::getHash(std::vector<byte> data)
+{
+	return is32bInstance ? getHash_32b(data, hbuf_32b, ommit_H, blockSize) : getHash_64b(data, hbuf_64b, ommit_H, blockSize);
+}
 
-		const int Sha2::getBlockSize()
-		{
-			return blockSize;
-		}
+const int Sha2::getBlockSize()
+{
+	return blockSize;
+}
 
-		Sha2 Sha2::getInstance_224()
-		{
-			return Sha2(true, 4, sha224_hBuf, std::vector<word64>(), BLOCKSIZE_32B);
-		}
+Sha2 Sha2::getInstance_224()
+{
+	return Sha2(true, 4, sha224_hBuf, std::vector<word64>(), BLOCKSIZE_32B);
+}
 
-		Sha2 Sha2::getInstance_256()
-		{
-			return Sha2(true, 0, sha256_hBuf, std::vector<word64>(), BLOCKSIZE_32B);
-		}
+Sha2 Sha2::getInstance_256()
+{
+	return Sha2(true, 0, sha256_hBuf, std::vector<word64>(), BLOCKSIZE_32B);
+}
 
-		Sha2 Sha2::getInstance_384()
-		{
-			return Sha2(false, 16, std::vector<word32>(), sha384_hBuf, BLOCKSIZE_64B);
-		}
+Sha2 Sha2::getInstance_384()
+{
+	return Sha2(false, 16, std::vector<word32>(), sha384_hBuf, BLOCKSIZE_64B);
+}
 
-		Sha2 Sha2::getInstance_512()
-		{
-			return Sha2(false, 0, std::vector<word32>(), sha512_hBuf, BLOCKSIZE_64B);
-		}
+Sha2 Sha2::getInstance_512()
+{
+	return Sha2(false, 0, std::vector<word32>(), sha512_hBuf, BLOCKSIZE_64B);
+}
 
-		Sha2 Sha2::getInstance_512_224()
-		{
-			return Sha2(false, 36, std::vector<word32>(), sha512_224_hBuf, BLOCKSIZE_64B);
-		}
+Sha2 Sha2::getInstance_512_224()
+{
+	return Sha2(false, 36, std::vector<word32>(), sha512_224_hBuf, BLOCKSIZE_64B);
+}
 
-		Sha2 Sha2::getInstance_512_256()
-		{
-			return Sha2(false, 32, std::vector<word32>(), sha512_256_hBuf, BLOCKSIZE_64B);
-		}
-	}
+Sha2 Sha2::getInstance_512_256()
+{
+	return Sha2(false, 32, std::vector<word32>(), sha512_256_hBuf, BLOCKSIZE_64B);
 }
 
 

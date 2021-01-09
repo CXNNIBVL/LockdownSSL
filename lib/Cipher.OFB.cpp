@@ -1,33 +1,50 @@
 #include "Modes.h"
 #include "Exception.h"
 
-namespace LockdownSSL
+using namespace LockdownSSL::EncryptionModes;
+
+OFB::OFB(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte>& IV) : cipher(Cipher)
 {
-	namespace EncryptionModes
+	LOCKDOWNSSL_ASSERT(IV.size() == Cipher.getBlockSize(), LockdownSSL::Exceptions::InvalidDataFormatException("IV length != Cipher Blocksize"));
+	
+	iv = new byte[cipher.getBlockSize()];
+	ivptr = 0;
+	orgIV = IV;
+
+	for(int i = 0; i < cipher.getBlockSize(); i++)
+		iv[i] = orgIV[i];
+
+	cipher.encrypt(iv);
+}
+
+std::vector<byte> OFB::getOutput()
+{
+	return outBuffer;
+}
+
+void OFB::stream(byte& data)
+{
+	if(ivptr == cipher.getBlockSize())
 	{
-		std::vector<byte> OFB::stream(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> data, std::vector<byte> IV)
-		{
-			word64 dataSize = data.size();
-			int blockSize = Cipher.getBlockSize();
-
-			LOCKDOWNSSL_ASSERT(IV.size() == blockSize, LockdownSSL::Exceptions::InvalidDataFormatException("IV length != Cipher Blocksize"));
-
-			byte* tmp = new byte[blockSize];
-			for (int i = 0; i < blockSize; i++)
-				tmp[i] = IV[i];
-
-			word64 processedBytes = 0;
-
-			while (processedBytes < dataSize)
-			{
-				Cipher.encrypt(tmp);
-
-				for (int i = 0; i < blockSize && processedBytes < dataSize; i++, processedBytes++)
-					data[processedBytes] ^= tmp[i];
-			}
-
-			delete[] tmp;
-			return data;
-		}
+		ivptr = 0;
+		cipher.encrypt(iv);
 	}
+
+	outBuffer.push_back((data ^ iv[ivptr++]));
+}
+
+void OFB::stream(std::vector<byte>& data)
+{
+	outBuffer.reserve(data.size());
+
+	for(word64 i = 0; i < data.size(); i++)
+		stream(data[i]);
+}
+
+void OFB::reset()
+{
+	for(int i = 0; i < cipher.getBlockSize(); i++)
+		iv[i] = orgIV[i];
+
+	outBuffer.resize(0);
 }

@@ -27,11 +27,6 @@ namespace LockdownSSL
 			ICipher_128b() {};
 		};
 	}
-
-	enum class OperationMode { Encrypt, Decrypt };
-
-	/*
-	std::vector<byte> gcm_encrypt(ICipher& Cipher, std::vector<byte> Data, std::vector<byte> AdditionalData, byte IV[12]);*/
 }
 
 #endif

@@ -133,9 +133,9 @@ byte* extract_from_state(word64(&state)[5][5])
 
 std::vector<word64> pre_processing(std::vector<byte>& data, int rate, int delimiter)
 {
-	size_t initialSize = data.size();
+	word32 initialSize = data.size();
 
-	size_t size_padding = rate - ((initialSize + 1) % rate);
+	word32 size_padding = rate - ((initialSize + 1) % rate);
 
 	data.resize(initialSize + size_padding + 1);
 
@@ -143,11 +143,11 @@ std::vector<word64> pre_processing(std::vector<byte>& data, int rate, int delimi
 
 	data[data.size() - 1] ^= 0x80;
 
-	size_t parsed_size = data.size() / 8;
+	word32 parsed_size = data.size() / 8;
 
 	auto parsed_data = std::vector<word64>(parsed_size);
 
-	for (size_t i = 0; i < parsed_size; i++)
+	for (word32 i = 0; i < parsed_size; i++)
 	{
 		parsed_data[i] = (word64)(data[(i * 8) + 7]) << 56 |
 			(word64)(data[(i * 8) + 6]) << 48 |
@@ -180,7 +180,7 @@ std::vector<byte> squeeze(word64(&state)[5][5], word64 out_len, int rate)
 	{
 		byte* ex_b = extract_from_state(state);
 
-		for (size_t i = 0; i < out_len; i++)
+		for (word32 i = 0; i < out_len; i++)
 		{
 			output[i] = ex_b[i];
 		}
@@ -189,7 +189,7 @@ std::vector<byte> squeeze(word64(&state)[5][5], word64 out_len, int rate)
 	}
 	else if (out_len > rate)
 	{
-		size_t out_ctr = 0;
+		word32 out_ctr = 0;
 
 		byte* ex_b = extract_from_state(state);
 
@@ -231,7 +231,7 @@ std::vector<byte> keccakInternal_run(std::vector<word64> parsed_data, word64 r_6
 		{0,0,0,0,0}
 	};
 
-	size_t num_parts = parsed_data.size() / r_64;
+	word32 num_parts = parsed_data.size() / r_64;
 	word64 rate_ctr;
 
 	for (long i = 0; i < num_parts; i++)
@@ -253,75 +253,71 @@ std::vector<byte> keccakInternal_run(std::vector<word64> parsed_data, word64 r_6
 
 std::vector<byte> keccak1600_run(std::vector<byte> Data, int rate, int delimiter, word64 out_len)
 {
-	std::vector<byte> data = std::vector(Data.begin(), Data.end());
+	std::vector<byte> data = std::vector<byte>(Data.begin(), Data.end());
 
 	word64 r_64 = rate / 8;
 
 	return keccakInternal_run(pre_processing(data, rate, delimiter), r_64, rate, out_len);
 }
 
-namespace LockdownSSL
+using namespace LockdownSSL::Hash;
+
+const int Sha3::getBlockSize()
 {
-	namespace Hash
+	return blockSize;
+}
+
+std::vector<byte> Sha3::getHash(std::vector<byte> data)
+{
+	return keccak1600_run(data, getBlockSize(), Sha3_delim, output_length);
+}
+
+Sha3 Sha3::getInstance_224()
+{
+	return Sha3(28, 144);
+}
+
+Sha3 Sha3::getInstance_256()
+{
+	return Sha3(32, 136);
+}
+
+Sha3 Sha3::getInstance_384()
+{
+	return Sha3(48, 104);
+}
+
+Sha3 Sha3::getInstance_512()
+{
+	return Sha3(64, 72);
+}
+
+/*-------------------------------*/
+
+std::vector<byte> Shake::getHash(std::vector<byte> data, word64 outBytes, word64 outBits)
+{
+	byte remainderBits = outBits > 0 && outBits < 8 ? outBits : outBits % 8;
+	byte additional = remainderBits > 0 ? 1 : 0;
+
+	word64 out_len = outBytes + ((outBits - remainderBits) / 8) + additional;
+
+	std::vector<byte> outData = keccak1600_run(data, rate, Shake_delim, out_len);
+
+	if (out_len != 0)
 	{
-		const int Sha3::getBlockSize()
-		{
-			return blockSize;
-		}
-
-		std::vector<byte> Sha3::getHash(std::vector<byte> data)
-		{
-			return keccak1600_run(data, getBlockSize(), Sha3_delim, output_length);
-		}
-
-		Sha3 Sha3::getInstance_224()
-		{
-			return Sha3(28, 144);
-		}
-
-		Sha3 Sha3::getInstance_256()
-		{
-			return Sha3(32, 136);
-		}
-
-		Sha3 Sha3::getInstance_384()
-		{
-			return Sha3(48, 104);
-		}
-
-		Sha3 Sha3::getInstance_512()
-		{
-			return Sha3(64, 72);
-		}
-
-		/*-------------------------------*/
-
-		std::vector<byte> Shake::getHash(std::vector<byte> data, word64 outBytes, word64 outBits)
-		{
-			byte remainderBits = outBits > 0 && outBits < 8 ? outBits : outBits % 8;
-			byte additional = remainderBits > 0 ? 1 : 0;
-
-			word64 out_len = outBytes + ((outBits - remainderBits) / 8) + additional;
-
-			std::vector<byte> outData = keccak1600_run(data, rate, Shake_delim, out_len);
-
-			if (out_len != 0)
-			{
-				byte mask = 255 >> (8 - (remainderBits > 0 ? remainderBits : 8));
-				outData[out_len - 1] &= mask;
-			}
-
-			return outData;
-		}
-
-		Shake Shake::getInstance_128()
-		{
-			return Shake(168);
-		}
-
-		Shake Shake::getInstance_256()
-		{
-			return Shake(136);
-		}
+		byte mask = 255 >> (8 - (remainderBits > 0 ? remainderBits : 8));
+		outData[out_len - 1] &= mask;
 	}
+
+	return outData;
+}
+
+Shake Shake::getInstance_128()
+{
+	return Shake(168);
+}
+
+Shake Shake::getInstance_256()
+{
+	return Shake(136);
 }

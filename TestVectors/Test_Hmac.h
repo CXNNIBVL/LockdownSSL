@@ -128,7 +128,7 @@ namespace LockdownSSL
 			};
 
 			auto res_1 = LockdownSSL::Hash::HMAC::getMac(instance, data_1, key_1);
-			for (size_t i = 0; i < out_1.size(); i++)
+			for (word32 i = 0; i < out_1.size(); i++)
 			{
 				if (out_1[i] != res_1[i])
 				{
@@ -140,7 +140,7 @@ namespace LockdownSSL
 			std::cout << "Hmac Sha224 Test 1 Passed!" << std::endl;
 
 			auto res_2 = LockdownSSL::Hash::HMAC::getMac(instance, data_2, key_2);
-			for (size_t i = 0; i < out_2.size(); i++)
+			for (word32 i = 0; i < out_2.size(); i++)
 			{
 				if (out_2[i] != res_2[i])
 				{
@@ -152,7 +152,7 @@ namespace LockdownSSL
 			std::cout << "Hmac Sha224 Test 2 Passed!" << std::endl;
 
 			auto res_3 = LockdownSSL::Hash::HMAC::getMac(instance, data_3, key_3);
-			for (size_t i = 0; i < out_3.size(); i++)
+			for (word32 i = 0; i < out_3.size(); i++)
 			{
 				if (out_3[i] != res_3[i])
 				{

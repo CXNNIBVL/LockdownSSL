@@ -34,7 +34,7 @@ namespace LockdownSSL
 			};
 
 			auto res_1 = instance.getHash(data_1);
-			for (size_t i = 0; i < out_1.size(); i++)
+			for (word32 i = 0; i < out_1.size(); i++)
 			{
 				if (out_1[i] != res_1[i])
 				{
@@ -45,7 +45,7 @@ namespace LockdownSSL
 			std::cout << "Sha3 224 Test 1 Passed" << std::endl;
 
 			auto res_2 = instance.getHash(data_2);
-			for (size_t i = 0; i < out_2.size(); i++)
+			for (word32 i = 0; i < out_2.size(); i++)
 			{
 				if (out_2[i] != res_2[i])
 				{
@@ -87,7 +87,7 @@ namespace LockdownSSL
 			};
 
 			auto res_1 = instance.getHash(data_1);
-			for (size_t i = 0; i < out_1.size(); i++)
+			for (word32 i = 0; i < out_1.size(); i++)
 			{
 				if (out_1[i] != res_1[i])
 				{
@@ -98,7 +98,7 @@ namespace LockdownSSL
 			std::cout << "Sha3 256 Test 1 Passed" << std::endl;
 
 			auto res_2 = instance.getHash(data_2);
-			for (size_t i = 0; i < out_2.size(); i++)
+			for (word32 i = 0; i < out_2.size(); i++)
 			{
 				if (out_2[i] != res_2[i])
 				{
@@ -143,7 +143,7 @@ namespace LockdownSSL
 			};
 
 			auto res_1 = instance.getHash(data_1);
-			for (size_t i = 0; i < out_1.size(); i++)
+			for (word32 i = 0; i < out_1.size(); i++)
 			{
 				if (out_1[i] != res_1[i])
 				{
@@ -154,7 +154,7 @@ namespace LockdownSSL
 			std::cout << "Sha3 384 Test 1 Passed" << std::endl;
 
 			auto res_2 = instance.getHash(data_2);
-			for (size_t i = 0; i < out_2.size(); i++)
+			for (word32 i = 0; i < out_2.size(); i++)
 			{
 				if (out_2[i] != res_2[i])
 				{
@@ -205,7 +205,7 @@ namespace LockdownSSL
 			};
 
 			auto res_1 = instance.getHash(data_1);
-			for (size_t i = 0; i < out_1.size(); i++)
+			for (word32 i = 0; i < out_1.size(); i++)
 			{
 				if (out_1[i] != res_1[i])
 				{
@@ -216,7 +216,7 @@ namespace LockdownSSL
 			std::cout << "Sha3 512 Test 1 Passed" << std::endl;
 
 			auto res_2 = instance.getHash(data_2);
-			for (size_t i = 0; i < out_2.size(); i++)
+			for (word32 i = 0; i < out_2.size(); i++)
 			{
 				if (out_2[i] != res_2[i])
 				{
@@ -401,7 +401,7 @@ namespace LockdownSSL
 			};
 
 			auto res_1 = instance.getHash(data, 512, 0);
-			for (size_t i = 0; i < out_1.size(); i++)
+			for (word32 i = 0; i < out_1.size(); i++)
 			{
 				if (out_1[i] != res_1[i])
 				{
@@ -412,7 +412,7 @@ namespace LockdownSSL
 			std::cout << "Shake128 Test 1 Passed" << std::endl;
 
 			auto res_2 = instance.getHash(data, 0, 4093);
-			for (size_t i = 0; i < out_2.size(); i++)
+			for (word32 i = 0; i < out_2.size(); i++)
 			{
 				if (out_2[i] != res_2[i])
 				{
@@ -481,7 +481,7 @@ namespace LockdownSSL
 			};
 
 			auto res = instance.getHash(data, 512, 0);
-			for (size_t i = 0; i < out.size(); i++)
+			for (word32 i = 0; i < out.size(); i++)
 			{
 				if (out[i] != res[i])
 				{

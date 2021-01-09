@@ -59,39 +59,67 @@ namespace LockdownSSL
 		class OFB
 		{
 		public:
-			static std::vector<byte> stream(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> data, std::vector<byte> IV);
-		private:
-			OFB();
-		};
+			OFB(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte>& IV);
 
-		class CTR
-		{
-		public:
-			CTR(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Nonce, unsigned int ctrBytes_Size);
+			~OFB()
+			{
+				delete[] iv;
+			}
 
-			std::vector<byte> stream(std::vector<byte>& data);
-			std::vector<byte> stream(byte data);
+			void stream(std::vector<byte>& data);
+			void stream(byte& data);
 
-			CTR& operator <<(byte& data)
+			OFB& operator <<(std::vector<byte>& data)
 			{
 				stream(data);
 				return *this;
 			}
 
-			CTR& operator <<(std::vector<byte>& data)
+			OFB& operator <<(byte& data)
 			{
 				stream(data);
 				return *this;
 			}
 
 			std::vector<byte> getOutput();
+			void reset();
 
 		private:
-			std::vector<byte> buffer;
-			std::vector<byte> nonce;
 			LockdownSSL::Cipher::ICipher& cipher;
-			unsigned int ctrBytes_size;
+			std::vector<byte> orgIV;
+			byte ivptr;
+			byte* iv;
+			std::vector<byte> outBuffer;
 		};
+
+		// class CTR
+		// {
+		// public:
+		// 	CTR(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Nonce, unsigned int ctrBytes_Size);
+
+		// 	std::vector<byte> stream(std::vector<byte>& data);
+		// 	std::vector<byte> stream(byte data);
+
+		// 	CTR& operator <<(byte& data)
+		// 	{
+		// 		stream(data);
+		// 		return *this;
+		// 	}
+
+		// 	CTR& operator <<(std::vector<byte>& data)
+		// 	{
+		// 		stream(data);
+		// 		return *this;
+		// 	}
+
+		// 	std::vector<byte> getOutput();
+
+		// private:
+		// 	std::vector<byte> buffer;
+		// 	std::vector<byte> nonce;
+		// 	LockdownSSL::Cipher::ICipher& cipher;
+		// 	unsigned int ctrBytes_size;
+		// };
 	}
 }
 

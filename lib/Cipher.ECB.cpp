@@ -1,60 +1,56 @@
 #include "Modes.h"
 #include "Exception.h"
 
-namespace LockdownSSL
+using namespace LockdownSSL::EncryptionModes;
+
+std::vector<byte> ECB::encrypt(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Data)
 {
-	namespace EncryptionModes
-	{
-		std::vector<byte> ECB::encrypt(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Data)
-		{
-			word64 dataSize = Data.size();
+	word64 dataSize = Data.size();
 
-			LOCKDOWNSSL_ASSERT(dataSize % Cipher.getBlockSize() == 0, LockdownSSL::Exceptions::InvalidDataFormatException("DataSize is not a multiple of the Blocksize"));
+	LOCKDOWNSSL_ASSERT(dataSize % Cipher.getBlockSize() == 0, LockdownSSL::Exceptions::InvalidDataFormatException("DataSize is not a multiple of the Blocksize"));
 
-			byte* data = new byte[dataSize];
+	byte* data = new byte[dataSize];
 
-			for (word64 i = 0; i < dataSize; i++)
-				data[i] = Data[i];
+	for (word64 i = 0; i < dataSize; i++)
+		data[i] = Data[i];
 
-			int blockSize = Cipher.getBlockSize();
-			word64 numParts = dataSize / blockSize;
+	int blockSize = Cipher.getBlockSize();
+	word64 numParts = dataSize / blockSize;
 
-			for (word64 i = 0; i < numParts; i++)
-				Cipher.encrypt(data + (i * blockSize));
+	for (word64 i = 0; i < numParts; i++)
+		Cipher.encrypt(data + (i * blockSize));
 
-			auto out = std::vector<byte>(dataSize);
-			for (word64 i = 0; i < dataSize; i++)
-				out[i] = data[i];
+	auto out = std::vector<byte>(dataSize);
+	for (word64 i = 0; i < dataSize; i++)
+		out[i] = data[i];
 
-			delete[] data;
+	delete[] data;
 
-			return out;
-		}
+	return out;
+}
 
-		std::vector<byte> ECB::decrypt(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Data)
-		{
-			word64 dataSize = Data.size();
+std::vector<byte> ECB::decrypt(LockdownSSL::Cipher::ICipher& Cipher, std::vector<byte> Data)
+{
+	word64 dataSize = Data.size();
 
-			LOCKDOWNSSL_ASSERT(dataSize % Cipher.getBlockSize() == 0, LockdownSSL::Exceptions::InvalidDataFormatException("DataSize is not a multiple of the Blocksize"));
+	LOCKDOWNSSL_ASSERT(dataSize % Cipher.getBlockSize() == 0, LockdownSSL::Exceptions::InvalidDataFormatException("DataSize is not a multiple of the Blocksize"));
 
-			byte* data = new byte[dataSize];
+	byte* data = new byte[dataSize];
 
-			for (word64 i = 0; i < dataSize; i++)
-				data[i] = Data[i];
+	for (word64 i = 0; i < dataSize; i++)
+		data[i] = Data[i];
 
-			int blockSize = Cipher.getBlockSize();
-			word64 numParts = dataSize / blockSize;
+	int blockSize = Cipher.getBlockSize();
+	word64 numParts = dataSize / blockSize;
 
-			for (word64 i = 0; i < numParts; i++)
-				Cipher.decrypt(data + (i * blockSize));
+	for (word64 i = 0; i < numParts; i++)
+		Cipher.decrypt(data + (i * blockSize));
 
-			auto out = std::vector<byte>(dataSize);
-			for (word64 i = 0; i < dataSize; i++)
-				out[i] = data[i];
+	auto out = std::vector<byte>(dataSize);
+	for (word64 i = 0; i < dataSize; i++)
+		out[i] = data[i];
 
-			delete[] data;
+	delete[] data;
 
-			return out;
-		}
-	}
+	return out;
 }

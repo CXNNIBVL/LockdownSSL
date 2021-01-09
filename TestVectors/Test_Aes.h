@@ -38,7 +38,7 @@ namespace LockdownSSL
 			auto aes_instance = LockdownSSL::Cipher::Aes::getInstance_128(key);
 
 			std::vector<byte> encrypted_output = LockdownSSL::EncryptionModes::ECB::encrypt(aes_instance, plaintext);
-			for (size_t i = 0; i < ciphertext.size(); i++)
+			for (word32 i = 0; i < ciphertext.size(); i++)
 			{
 				if (encrypted_output[i] != ciphertext[i])
 				{
@@ -50,7 +50,7 @@ namespace LockdownSSL
 			std::cout << "Aes128 ECB encryption passed!" << std::endl;
 
 			std::vector<byte> decrypted_output = LockdownSSL::EncryptionModes::ECB::decrypt(aes_instance, ciphertext);
-			for (size_t i = 0; i < plaintext.size(); i++)
+			for (word32 i = 0; i < plaintext.size(); i++)
 			{
 				if (decrypted_output[i] != plaintext[i])
 				{
@@ -92,7 +92,7 @@ namespace LockdownSSL
 			auto aes_instance = LockdownSSL::Cipher::Aes::getInstance_192(key);
 
 			std::vector<byte> encrypted_output = LockdownSSL::EncryptionModes::ECB::encrypt(aes_instance, plaintext);
-			for (size_t i = 0; i < ciphertext.size(); i++)
+			for (word32 i = 0; i < ciphertext.size(); i++)
 			{
 				if (encrypted_output[i] != ciphertext[i])
 				{
@@ -104,7 +104,7 @@ namespace LockdownSSL
 			std::cout << "Aes192 ECB encryption passed!" << std::endl;
 
 			std::vector<byte> decrypted_output = LockdownSSL::EncryptionModes::ECB::decrypt(aes_instance, ciphertext);
-			for (size_t i = 0; i < plaintext.size(); i++)
+			for (word32 i = 0; i < plaintext.size(); i++)
 			{
 				if (decrypted_output[i] != plaintext[i])
 				{
@@ -146,7 +146,7 @@ namespace LockdownSSL
 			auto aes_instance = LockdownSSL::Cipher::Aes::getInstance_256(key);
 
 			std::vector<byte> encrypted_output = LockdownSSL::EncryptionModes::ECB::encrypt(aes_instance, plaintext);
-			for (size_t i = 0; i < ciphertext.size(); i++)
+			for (word32 i = 0; i < ciphertext.size(); i++)
 			{
 				if (encrypted_output[i] != ciphertext[i])
 				{
@@ -158,7 +158,7 @@ namespace LockdownSSL
 			std::cout << "Aes256 ECB encryption passed!" << std::endl;
 
 			std::vector<byte> decrypted_output = LockdownSSL::EncryptionModes::ECB::decrypt(aes_instance, ciphertext);
-			for (size_t i = 0; i < plaintext.size(); i++)
+			for (word32 i = 0; i < plaintext.size(); i++)
 			{
 				if (decrypted_output[i] != plaintext[i])
 				{

@@ -3,7 +3,11 @@
 #include <string>
 #include <stdexcept>
 
-#define LOCKDOWNSSL_ASSERT(exp, exc) if(!(exp)) throw exc
+#ifdef LOCKDOWNSSL_DEBUG
+	#define LOCKDOWNSSL_ASSERT(exp, exc) if(!(exp)) throw exc
+#else
+	#define LOCKDOWNSSL_ASSERT(exp, exc)
+#endif
 
 namespace LockdownSSL
 {

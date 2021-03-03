@@ -93,13 +93,13 @@ private:
     T m_Arr[S];
 };
 
-template<typename _SecBlock>
+template<typename T>
 class SecureBlockIterator
 {
 public:
-    using value_type = _SecBlock::value_type;
+    using value_type = T;
     using pointer = value_type*;
-    using reference = &value_type;
+    using reference = value_type&;
 
 public:
     SecureBlockIterator(pointer ptr) : m_Ptr(ptr){}
@@ -131,7 +131,7 @@ class SecureBlockBase
 {
 public:
     using value_type = T;
-    using Iterator = SecureBlockIterator<SecureBlockBase<T, A>>;
+    using Iterator = SecureBlockIterator<value_type>;
 
 public:
 
@@ -160,9 +160,9 @@ public:
 
     size_t Size() const { return m_Size; }
 
-    Iterator Begin() { return Iterator(m_Data); }
+    Iterator begin() { return Iterator(m_Data); }
 
-    Iterator End() { return Iterator(m_Data + m_Size); }
+    Iterator end() { return Iterator(m_Data + m_Size); }
 
     const T* Data() const { return m_Data; }
     T* Data() { return m_Data; }
@@ -201,9 +201,6 @@ template<typename T>
 class SecureBlock : public SecureBlockBase<T, SecureAllocator<T>>
 {
 public:
-    using Alloc = SecureAllocator<T>;
-
-public:
 
     explicit SecureBlock(size_t Size=0) : SecureBlockBase<T, Alloc>(Size) {}
 
@@ -211,59 +208,65 @@ public:
 
     SecureBlock(const T* Data, size_t Size) : SecureBlockBase<T, Alloc>(Data, Size) {}
 
-    void Resize(size_t newSize) { m_Data = m_Alloc.Reallocate(m_Data, m_Size, newSize); m_Size = newSize; }
+    void Resize(size_t newSize) { this->m_Data = this->m_Alloc.Reallocate(this->m_Data, this->m_Size, newSize); this->m_Size = newSize; }
 
     void Grow(size_t count)
     {
-        m_Data = m_Alloc.Reallocate(m_Data, m_Size, m_Size + count);
-        m_Size += count;
+        this->m_Data = this->m_Alloc.Reallocate(this->m_Data, this->m_Size, this->m_Size + count);
+        this->m_Size += count;
     }
 
     void CleanGrow(size_t count)
     {
-        m_Data = m_Alloc.Reallocate(m_Data, m_Size, m_Size + count);
-        std::memset(m_Data + m_Size, 0, count * sizeof(T));
-        m_Size += count;
+        this->m_Data = this->m_Alloc.Reallocate(this->m_Data, this->m_Size, this->m_Size + count);
+        std::memset(this->m_Data + this->m_Size, 0, count * sizeof(T));
+        this->m_Size += count;
     }
 
     void New(size_t newSize)
     {
-        m_Data = m_Alloc.Reallocate(m_Data, m_Size, newSize);
-        m_Size = newSize;
-        std::memset(m_Data, 0, m_Size * sizeof(T));
+        this->m_Data = this->m_Alloc.Reallocate(this->m_Data, this->m_Size, newSize);
+        this->m_Size = newSize;
+        std::memset(this->m_Data, 0, this->m_Size * sizeof(T));
     }
 
     void Assign(const T* data, size_t len)
     {
         New(len);
-        std::memcpy(m_Data, data, len * sizeof(T));
+        std::memcpy(this->m_Data, data, len * sizeof(T));
     }
 
     void Assign(const SecureBlock<T>& other)
     {
         Assign(other.m_Data, other.m_Size);
     }
+
+private:
+    using Alloc = SecureAllocator<T>;
 };
 
-template<typename T, size_t S>
+template<typename T, size_t S=0>
 class FixedSizeSecureBlock : public SecureBlockBase<T, FixedSizeSecureAllocator<T, S>>
 {
-public:
-    using Alloc = FixedSizeSecureAllocator<T, S>;
-
 public:
     explicit FixedSizeSecureBlock() : SecureBlockBase<T, Alloc>(S) {}
 
     void Assign(const T* data, size_t len)
     {
         if(len <= S)
-            std::memcpy(m_Data, data, len * sizeof(T)); return;
+        {
+            std::memcpy(this->m_Data, data, len * sizeof(T));
+            return;
+        }
 
-        std::memcpy(m_Data, data, S * sizeof(T));
+        std::memcpy(this->m_Data, data, S * sizeof(T));
     }
 
     void Assign(const FixedSizeSecureBlock<T, S>& other)
     {
         Assign(other.m_Data, other.m_Size);
     }
+
+private:
+    using Alloc = FixedSizeSecureAllocator<T, S>;
 };

@@ -1,5 +1,4 @@
-#ifndef LOCKDOWNSSL_AES
-#define LOCKDOWNSSL_AES
+#pragma once
 
 #include "ICipher.h"
 
@@ -10,9 +9,9 @@ namespace LockdownSSL
 		class Aes : public ICipher_128b
 		{
 		public:
-			static Aes getInstance_128(byte key[16]);
-			static Aes getInstance_192(byte key[24]);
-			static Aes getInstance_256(byte key[32]);
+			static Aes getInstance_128(byte* key);
+			static Aes getInstance_192(byte* key);
+			static Aes getInstance_256(byte* key);
 
 			void encrypt(byte* Data);
 			void decrypt(byte* Data);
@@ -36,5 +35,3 @@ namespace LockdownSSL
 		};
 	}
 }
-
-#endif

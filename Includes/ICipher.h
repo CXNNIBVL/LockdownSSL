@@ -1,5 +1,4 @@
-#ifndef LOCKDOWNSSL_ICIPHER
-#define LOCKDOWNSSL_ICIPHER
+#pragma once
 
 #include "types.h"
 
@@ -28,5 +27,3 @@ namespace LockdownSSL
 		};
 	}
 }
-
-#endif

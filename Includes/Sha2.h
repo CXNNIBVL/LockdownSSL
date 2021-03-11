@@ -17,17 +17,17 @@ namespace LockdownSSL
 			static Sha2 getInstance_512_224();
 			static Sha2 getInstance_512_256();
 
-			std::vector<byte> getHash(std::vector<byte>);
+			std::vector<byte> getHash(std::vector<byte>& Data);
 			const int getBlockSize();
 
 		private:
-			bool is32bInstance;
 			int ommit_H;
-			std::vector<word32> hbuf_32b;
-			std::vector<word64> hbuf_64b;
+			const word32* hbuf_32b;
+			const word64* hbuf_64b;
 			int blockSize;
 
-			Sha2(bool Is32bInstance, int Ommit_H, std::vector<word32> Hbuf_32b, std::vector<word64> Hbuf_64b, int Blocksize);
+			Sha2(int Ommit_H, const word32* Hbuf_32b, int Blocksize);
+			Sha2(int Ommit_H, const word64* Hbuf_64b, int Blocksize);
 		};
 	}
 }

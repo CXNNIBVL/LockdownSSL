@@ -2,7 +2,7 @@
 
 using namespace LockdownSSL::Hash;
 
-std::vector<byte> prepare_key(IHash& HashFunction, std::vector<byte> Key)
+std::vector<byte> prepare_key(IHash& HashFunction, std::vector<byte>& Key)
 {
 	const int blockSize = HashFunction.getBlockSize();
 
@@ -18,15 +18,18 @@ std::vector<byte> prepare_key(IHash& HashFunction, std::vector<byte> Key)
 	}
 	else
 	{
-		return prepare_key(HashFunction, HashFunction.getHash(Key));
+		auto tmp =HashFunction.getHash(Key);
+		return prepare_key(HashFunction, tmp);
 	}
 }
 
-std::vector<byte> HMAC::getMac(IHash& HashFunction, std::vector<byte> Data, std::vector<byte> Key)
+std::vector<byte> HMAC::getMac(IHash& HashFunction, std::vector<byte>& Data, std::vector<byte>& Key)
 {
 	std::vector<byte> key = prepare_key(HashFunction, Key);
 
-	auto ipad = std::vector<byte>();
+	std::vector<byte> ipad;
+	ipad.reserve(key.size() + Data.size());
+
 	ipad.insert(ipad.begin(), key.begin(), key.end());
 	ipad.insert(ipad.end(), Data.begin(), Data.end());
 
@@ -37,7 +40,9 @@ std::vector<byte> HMAC::getMac(IHash& HashFunction, std::vector<byte> Data, std:
 
 	ipad = HashFunction.getHash(ipad);
 
-	auto opad = std::vector<byte>();
+	std::vector<byte> opad;
+	opad.reserve(key.size() + ipad.size());
+
 	opad.insert(opad.begin(), key.begin(), key.end());
 	opad.insert(opad.end(), ipad.begin(), ipad.end());
 

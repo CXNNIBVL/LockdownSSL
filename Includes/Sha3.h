@@ -15,7 +15,7 @@ namespace LockdownSSL
 			static Sha3 getInstance_384();
 			static Sha3 getInstance_512();
 
-			std::vector<byte> getHash(std::vector<byte> data);
+			std::vector<byte> getHash(std::vector<byte>& data);
 			const int getBlockSize();
 
 
@@ -36,7 +36,7 @@ namespace LockdownSSL
 			static Shake getInstance_128();
 			static Shake getInstance_256();
 
-			std::vector<byte> getHash(std::vector<byte> data, word64 outBytes, word64 outBits);
+			std::vector<byte> getHash(std::vector<byte>& data, const word64& outBytes, const word64& outBits);
 
 		private:
 			int rate;

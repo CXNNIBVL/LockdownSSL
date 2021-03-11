@@ -267,7 +267,7 @@ const int Sha3::getBlockSize()
 	return blockSize;
 }
 
-std::vector<byte> Sha3::getHash(std::vector<byte> data)
+std::vector<byte> Sha3::getHash(std::vector<byte>& data)
 {
 	return keccak1600_run(data, getBlockSize(), Sha3_delim, output_length);
 }
@@ -294,7 +294,7 @@ Sha3 Sha3::getInstance_512()
 
 /*-------------------------------*/
 
-std::vector<byte> Shake::getHash(std::vector<byte> data, word64 outBytes, word64 outBits)
+std::vector<byte> Shake::getHash(std::vector<byte>& data, const word64& outBytes, const word64& outBits)
 {
 	byte remainderBits = outBits > 0 && outBits < 8 ? outBits : outBits % 8;
 	byte additional = remainderBits > 0 ? 1 : 0;

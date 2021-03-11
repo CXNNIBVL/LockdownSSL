@@ -1,13 +1,13 @@
 #include "Sha2.h"
 
-const std::vector<word32> sha224_hBuf{ 0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4 };
-const std::vector<word32> sha256_hBuf{ 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 };
-const std::vector<word64> sha384_hBuf{ 0xcbbb9d5dc1059ed8, 0x629a292a367cd507, 0x9159015a3070dd17, 0x152fecd8f70e5939, 0x67332667ffc00b31, 0x8eb44a8768581511, 0xdb0c2e0d64f98fa7, 0x47b5481dbefa4fa4 };
-const std::vector<word64> sha512_hBuf{ 0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179 };
-const std::vector<word64> sha512_224_hBuf{ 0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF,0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 };
-const std::vector<word64> sha512_256_hBuf{ 0x22312194FC2BF72C, 0x9F555FA3C84C64C2, 0x2393B86B6F53B151, 0x963877195940EABD, 0x96283EE2A88EFFE3, 0xBE5E1E2553863992, 0x2B0199FC2C85B8AA, 0x0EB72DDC81C52CA2 };
+const word32 sha224_hBuf[] = 	{ 0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4 };
+const word32 sha256_hBuf[] = 	{ 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 };
+const word64 sha384_hBuf[] = 		{ 0xcbbb9d5dc1059ed8, 0x629a292a367cd507, 0x9159015a3070dd17, 0x152fecd8f70e5939, 0x67332667ffc00b31, 0x8eb44a8768581511, 0xdb0c2e0d64f98fa7, 0x47b5481dbefa4fa4 };
+const word64 sha512_hBuf[] = 		{ 0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179 };
+const word64 sha512_224_hBuf[] = 	{ 0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF,0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 };
+const word64 sha512_256_hBuf[] = 	{ 0x22312194FC2BF72C, 0x9F555FA3C84C64C2, 0x2393B86B6F53B151, 0x963877195940EABD, 0x96283EE2A88EFFE3, 0xBE5E1E2553863992, 0x2B0199FC2C85B8AA, 0x0EB72DDC81C52CA2 };
 
-const std::vector<word32> sha224_256_kBuf
+const word32 sha224_256_kBuf[] =
 {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -19,7 +19,7 @@ const std::vector<word32> sha224_256_kBuf
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-const std::vector<word64> sha384_512_kBuf
+const word64 sha384_512_kBuf[] =
 {
 	0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc, 0x3956c25bf348b538,
 	0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118, 0xd807aa98a3030242, 0x12835b0145706fbe,
@@ -44,30 +44,14 @@ const std::vector<word64> sha384_512_kBuf
 
 void parse_u8_to_u32(byte* msg, word32* words)
 {
-	int ctr = 0;
-	for (int i = 0; i < 64; i += 4)
-	{
-		words[ctr++] = (word32)msg[i] << 24 |
-			(word32)msg[i + 1] << 16 |
-			(word32)msg[i + 2] << 8 |
-			(word32)msg[i + 3];
-	}
+	for (int i = 0, ctr = 0; i < 64; i += 4, ctr++)
+		words[ctr] =  (word32)msg[i] << 24 | (word32)msg[i + 1] << 16 | (word32)msg[i + 2] << 8 | (word32)msg[i + 3];
 }
 
 void parse_u8_to_u64(byte* msg, word64* words)
 {
-	int ctr = 0;
-	for (int i = 0; i < 128; i += 8)
-	{
-		words[ctr++] = (word64)msg[i] << 56 |
-			(word64)msg[i + 1] << 48 |
-			(word64)msg[i + 2] << 40 |
-			(word64)msg[i + 3] << 32 |
-			(word64)msg[i + 4] << 24 |
-			(word64)msg[i + 5] << 16 |
-			(word64)msg[i + 6] << 8 |
-			(word64)msg[i + 7];
-	}
+	for (int i = 0, ctr = 0; i < 128; i += 8, ctr++)
+		words[ctr] = (word64)msg[i] << 56 | (word64)msg[i + 1] << 48 | (word64)msg[i + 2] << 40 | (word64)msg[i + 3] << 32 | (word64)msg[i + 4] << 24 | (word64)msg[i + 5] << 16 | (word64)msg[i + 6] << 8 | (word64)msg[i + 7];
 }
 
 inline word32 right_rot_32(word32 value, unsigned int count)
@@ -80,57 +64,32 @@ inline word64 right_rot_64(word64 value, unsigned int count)
 	return value >> count | value << (64 - count);
 }
 
-void padding(std::vector<byte>& data, int chunksize)
+void padding_32b(std::vector<byte>& data)
 {
 	word32 initial_size = data.size();
-	word32 pad_size;
-	word64 length_bits;
-	byte* length_bytes;
 
-	switch (chunksize)
+	word32 pad_size = BLOCKSIZE_32B - ((initial_size + 9) % BLOCKSIZE_32B);
+
+	data.resize(initial_size + pad_size + 9);
+	data[initial_size] = 0x80;
+
+	word64 length_bits = ((word64)initial_size) * 8;
+	byte* length_bytes = (byte*)&length_bits;
+
+	for (int i = initial_size + 1 + pad_size, ctr = 7; i < initial_size + pad_size + 9; i++, ctr--)
 	{
-	case 64:
-		pad_size = chunksize - ((initial_size + 9) % chunksize);
-
-		data.resize(initial_size + pad_size + 9);
-		data[initial_size] = 0x80;
-
-		length_bits = ((word64)initial_size) * 8;
-		length_bytes = (byte*)&length_bits;
-
-		for (int i = initial_size + 1 + pad_size, ctr = 7; i < initial_size + pad_size + 9; i++, ctr--)
-		{
-			data[i] = length_bytes[ctr];
-		}
-		break;
-
-	case 128:
-		pad_size = chunksize - ((initial_size + 17) % chunksize);
-
-		data.resize(initial_size + pad_size + 17);
-		data[initial_size] = 0x80;
-
-		length_bits = ((word64)initial_size) * 8;
-		length_bytes = (byte*)&length_bits;
-
-		for (int i = initial_size + 1 + pad_size + 8, ctr = 7; i < initial_size + pad_size + 17; i++, ctr--)
-		{
-			data[i] = length_bytes[ctr];
-		}
-		break;
+		data[i] = length_bytes[ctr];
 	}
 }
 
-void compress_32b(std::vector<byte>& data, word32 part, std::vector<word32>& h, std::vector<word32> k)
+void compress_32b(std::vector<byte>& data, word32 part, word32* h, const word32* k)
 {
 	byte msg[64];
 	word32 w[64];
 
-	int ctr = 0;
-
-	for (int i = part * 64; i < (part * 64) + 64; i++)
+	for (int i = part * 64, ctr = 0; i < (part * 64) + 64; i++, ctr++)
 	{
-		msg[ctr++] = data[i];
+		msg[ctr] = data[i];
 	}
 
 	parse_u8_to_u32(msg, w);
@@ -170,24 +129,26 @@ void compress_32b(std::vector<byte>& data, word32 part, std::vector<word32>& h, 
 		a = (tmp_1 + tmp_2) ;
 	}
 
-	h[0] = (a + h[0]) ;
-	h[1] = (b + h[1]) ;
-	h[2] = (c + h[2]) ;
-	h[3] = (d + h[3]) ;
-	h[4] = (e + h[4]) ;
-	h[5] = (f + h[5]) ;
-	h[6] = (g + h[6]) ;
-	h[7] = (h_ + h[7]) ;
+	h[0] += a;
+	h[1] += b;
+	h[2] += c;
+	h[3] += d;
+	h[4] += e;
+	h[5] += f;
+	h[6] += g;
+	h[7] += h_;
 }
 
-std::vector<byte> extract_32b(std::vector<word32>& h, int ommit)
+std::vector<byte> extract_32b(const word32* h, int& ommit)
 {
 	int num_elements = 32 - ommit;
-	std::vector<byte> U8_h = std::vector<byte>(num_elements);
+	std::vector<byte> U8_h;
+	U8_h.reserve(num_elements);
+
 	byte tmp_store[4];
 
 	word32 ctr = 0;
-	for (int i = 0; i < 8 && ctr < num_elements; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		word32 tmp = h[i];
 		
@@ -196,50 +157,67 @@ std::vector<byte> extract_32b(std::vector<word32>& h, int ommit)
 		tmp_store[2] = (tmp & 0x0000FF00) >> 8;
 		tmp_store[3] = (tmp & 0x000000FF);
 
-		for (int k = 0; k < 4 && ctr < num_elements; k++, ctr++)
-		{
+		for (int k = 0; k < 4; k++, ctr++)
+		{	
 			U8_h[ctr] = tmp_store[k];
+
+			if(ctr == num_elements)
+				break;
 		}
 	}
 
 	return U8_h;
 }
 
-std::vector<byte> getHash_32b(std::vector<byte> Data, std::vector<word32> h, int ommit_h, int chunksize)
+std::vector<byte> getHash_32b(std::vector<byte>& data, const word32* h, int& ommit_h)
 {
-	auto h_buf = new std::vector<word32>(h.begin(), h.end());
+	std::vector<byte> Data;
+	for(int i = 0; i  < data.size(); i++)
+		Data.push_back(data[i]);
 
-	auto data = new std::vector<byte>(Data.begin(), Data.end());
+	word32 h_buf[8];
+	
+	for(int i = 0; i < 8; i++)
+		h_buf[i] = h[i];
 
-	std::vector<word32> k = sha224_256_kBuf;
+	const word32* k = sha224_256_kBuf;
 
-	padding(*data, chunksize);
+	padding_32b(Data);
 
-	word32 num_parts = (*data).size() / chunksize;
+	word32 num_parts = Data.size() / BLOCKSIZE_32B;
 
 	for (word32 i = 0; i < num_parts; i++)
-	{
-		compress_32b(*data, i, *h_buf, k);
-	}
+		compress_32b(Data, i, h_buf, k);
 
-	std::vector<byte> out = extract_32b(*h_buf, ommit_h);
-
-	delete h_buf;
-	delete data;
-
-	return out;
+	return extract_32b(h_buf, ommit_h);
 }
 
-void compress_64b(std::vector<byte>& data, word32 part, std::vector<word64>& h, std::vector<word64> k)
+void padding_64b(std::vector<byte>& data)
+{
+	word32 initial_size = data.size();
+	
+	word32 pad_size = BLOCKSIZE_64B - ((initial_size + 17) % BLOCKSIZE_64B);
+
+	data.resize(initial_size + pad_size + 17);
+	data[initial_size] = 0x80;
+
+	word64 length_bits = ((word64)initial_size) * 8;
+	byte* length_bytes = (byte*)&length_bits;
+
+	for (int i = initial_size + 1 + pad_size + 8, ctr = 7; i < initial_size + pad_size + 17; i++, ctr--)
+	{
+		data[i] = length_bytes[ctr];
+	}
+}
+
+void compress_64b(std::vector<byte>& data, word32 part, word64* h, const word64* k)
 {
 	byte msg[128];
 	word64 w[80];
 
-	int ctr = 0;
-
-	for (int i = part * 128; i < (part * 128) + 128; i++)
+	for (int i = part * 128, ctr = 0; i < (part * 128) + 128; i++, ctr++)
 	{
-		msg[ctr++] = data[i];
+		msg[ctr] = data[i];
 	}
 
 	parse_u8_to_u64(msg, w);
@@ -279,24 +257,24 @@ void compress_64b(std::vector<byte>& data, word32 part, std::vector<word64>& h, 
 		a = (tmp_1 + tmp_2) ;
 	}
 
-	h[0] = (a + h[0]) ;
-	h[1] = (b + h[1]) ;
-	h[2] = (c + h[2]) ;
-	h[3] = (d + h[3]) ;
-	h[4] = (e + h[4]) ;
-	h[5] = (f + h[5]) ;
-	h[6] = (g + h[6]) ;
-	h[7] = (h_ + h[7]) ;
+	h[0] += a;
+	h[1] += b;
+	h[2] += c;
+	h[3] += d;
+	h[4] += e;
+	h[5] += f;
+	h[6] += g;
+	h[7] += h_;
 }
 
-std::vector<byte> extract_64b(std::vector<word64>& h, int ommit)
+std::vector<byte> extract_64b(const word64* h, int ommit)
 {
 	int num_elements = 64 - ommit;
 	std::vector<byte> U8_h = std::vector<byte>(num_elements);
 	byte tmp_store[8];
 
 	word32 ctr = 0;
-	for (int i = 0; i < 8 && ctr < num_elements; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		word64 tmp = h[i];
 		
@@ -309,53 +287,59 @@ std::vector<byte> extract_64b(std::vector<word64>& h, int ommit)
 		tmp_store[6] = (tmp & 0x000000000000FF00) >> 8;
 		tmp_store[7] = (tmp & 0x00000000000000FF);
 
-		for (int k = 0; k < 8 && ctr < num_elements; k++, ctr++)
+		for (int k = 0; k < 8; k++, ctr++)
 		{
 			U8_h[ctr] = tmp_store[k];
+
+			if(ctr == num_elements)
+				return U8_h;
 		}
 	}
 
 	return U8_h;
 }
 
-std::vector<byte> getHash_64b(std::vector<byte> Data, std::vector<word64> h, int ommit_h, int chunksize)
+std::vector<byte> getHash_64b(std::vector<byte>& data, const word64* h, int& ommit_h)
 {
-	auto h_buf = new std::vector<word64>(h.begin(), h.end());
-	auto data = new std::vector<byte>(Data.begin(), Data.end());
+	auto Data = std::vector<byte>(data.begin(), data.end());
 
-	std::vector<word64> k = sha384_512_kBuf;
+	word64 h_buf[8];
+	for(int i = 0; i < 8; i++)
+		h_buf[i] = h[i];
 
-	padding(*data, chunksize);
+	const word64* k = sha384_512_kBuf;
 
-	word32 num_parts = (*data).size() / chunksize;
+	padding_64b(Data);
+
+	word32 num_parts = Data.size() / BLOCKSIZE_64B;
 
 	for (word32 i = 0; i < num_parts; i++)
-	{
-		compress_64b(*data, i, *h_buf, k);
-	}
+		compress_64b(Data, i, h_buf, k);
 
-	std::vector<byte> out = extract_64b(*h_buf, ommit_h);
-
-	delete h_buf;
-	delete data;
-
-	return out;
+	return extract_64b(h_buf, ommit_h);
 }
 
 using namespace LockdownSSL::Hash;
 
-Sha2::Sha2(bool Is32bInstance, int Ommit_H, std::vector<word32> Hbuf_32b, std::vector<word64> Hbuf_64b, int Blocksize)
+Sha2::Sha2(int Ommit_H, const word32* Hbuf_32b, int Blocksize)
 {
-	is32bInstance = Is32bInstance;
-	ommit_H = Ommit_H;
 	hbuf_32b = Hbuf_32b;
-	hbuf_64b = Hbuf_64b;
+	hbuf_64b = nullptr;
+	ommit_H = Ommit_H;
 	blockSize = Blocksize;
 }
 
-std::vector<byte> Sha2::getHash(std::vector<byte> data)
+Sha2::Sha2(int Ommit_H, const word64* Hbuf_64b, int Blocksize)
 {
-	return is32bInstance ? getHash_32b(data, hbuf_32b, ommit_H, blockSize) : getHash_64b(data, hbuf_64b, ommit_H, blockSize);
+	hbuf_32b = nullptr;
+	hbuf_64b = Hbuf_64b;
+	ommit_H = Ommit_H;
+	blockSize = Blocksize;
+}
+
+std::vector<byte> Sha2::getHash(std::vector<byte>& data)
+{
+	return blockSize == BLOCKSIZE_32B ? getHash_32b(data, hbuf_32b, ommit_H) : getHash_64b(data, hbuf_64b, ommit_H);
 }
 
 const int Sha2::getBlockSize()
@@ -365,45 +349,30 @@ const int Sha2::getBlockSize()
 
 Sha2 Sha2::getInstance_224()
 {
-	return Sha2(true, 4, sha224_hBuf, std::vector<word64>(), BLOCKSIZE_32B);
+	return Sha2(4, sha224_hBuf, BLOCKSIZE_32B);
 }
 
 Sha2 Sha2::getInstance_256()
 {
-	return Sha2(true, 0, sha256_hBuf, std::vector<word64>(), BLOCKSIZE_32B);
+	return Sha2(0, sha256_hBuf, BLOCKSIZE_32B);
 }
 
 Sha2 Sha2::getInstance_384()
 {
-	return Sha2(false, 16, std::vector<word32>(), sha384_hBuf, BLOCKSIZE_64B);
+	return Sha2(16, sha384_hBuf, BLOCKSIZE_64B);
 }
 
 Sha2 Sha2::getInstance_512()
 {
-	return Sha2(false, 0, std::vector<word32>(), sha512_hBuf, BLOCKSIZE_64B);
+	return Sha2(0, sha512_hBuf, BLOCKSIZE_64B);
 }
 
 Sha2 Sha2::getInstance_512_224()
 {
-	return Sha2(false, 36, std::vector<word32>(), sha512_224_hBuf, BLOCKSIZE_64B);
+	return Sha2(36, sha512_224_hBuf, BLOCKSIZE_64B);
 }
 
 Sha2 Sha2::getInstance_512_256()
 {
-	return Sha2(false, 32, std::vector<word32>(), sha512_256_hBuf, BLOCKSIZE_64B);
+	return Sha2(32, sha512_256_hBuf, BLOCKSIZE_64B);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

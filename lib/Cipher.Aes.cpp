@@ -425,17 +425,17 @@ void Aes::decrypt(byte* state)
 	Add_Roundkey(state, expandedKeys);
 }
 
-Aes Aes::getInstance_128(byte key[16])
+Aes Aes::getInstance_128(byte* key)
 {
 	return Aes(176, KeyExpansion(key, 176, 16), 10);
 }
 
-Aes Aes::getInstance_192(byte key[24])
+Aes Aes::getInstance_192(byte* key)
 {
 	return Aes(208, KeyExpansion(key, 208, 24), 12);
 }
 
-Aes Aes::getInstance_256(byte key[32])
+Aes Aes::getInstance_256(byte* key)
 {
 	return Aes(240, KeyExpansion(key, 240, 32), 14);
 }

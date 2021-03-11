@@ -1,5 +1,5 @@
 ## Welcome to LockdownSSL
-
+This is a C++ Class Library of Cryptographic Schemes
 
 ***
 

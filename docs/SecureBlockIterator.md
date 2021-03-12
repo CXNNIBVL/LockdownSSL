@@ -23,13 +23,13 @@ Constructor | Parameters | Description
 
 Function | Parameters | Description
 --- | --- | ---
-`SecureBlockIterator& operator++() ` | | Increments the pointer address
-`SecureBlockIterator operator++(int)` |  | Increments the current pointer position's value
-`SecureBlockIterator& operator--()` | | Decrements the pointer address
-`SecureBlockIterator operator--(int)` | | Decrements the current pointer position's value
+`SecureBlockIterator& operator++() ` | ~~XXXX~~ | Increments the pointer address
+`SecureBlockIterator operator++(int)` | ~~XXXX~~ | Increments the current pointer position's value
+`SecureBlockIterator& operator--()` | ~~XXXX~~ | Decrements the pointer address
+`SecureBlockIterator operator--(int)` | ~~XXXX~~ | Decrements the current pointer position's value
 `reference operator[](int index)` | `index` the index to look up | Returns the value pointed to by the current pointer + index
-`pointer operator->()` | | Returns the memory address of the current pointer
-`reference operator*()` | | Returns the current pointers value
+`pointer operator->()` | ~~XXXX~~ | Returns the memory address of the current pointer
+`reference operator*()` | ~~XXXX~~ | Returns the current pointers value
 `bool operator==(const SecureBlockIterator& other)` | `other` Another SecureBlockIterator | Compares the memory addresses
 `bool operator!=(const SecureBlockIterator& other)` | `other` Another SecureBlockIterator | Returns the inverse of `operator==`
 

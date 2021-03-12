@@ -22,7 +22,7 @@ Class | Mode | Links
 ### Constructors
 Constructor | Parameters | Description
 --- | --- | ---
-`FixedSizeSecureBlock()` |  | Default Constructor
+`FixedSizeSecureBlock()` | ~~XXXX~~ | Default Constructor
 `FixedSizeSecureBlock(T val)` | `val` the value to fill the block with | Fills the block with `val`
 `FixedSizeSecureBlock(const FixedSizeSecureBlock<T, S>& Other)` | `Other` Another FixedSizeSecureBlock of type `T` and size `S` | Creates a FixedSizeSecureBlock from another FixedSizeSecureBlock
 

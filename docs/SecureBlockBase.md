@@ -28,13 +28,13 @@ Constructor | Parameters | Description
 
 Function | Parameters | Description
 --- | --- | ---
-`~SecureBlockBase()` | | Deallocates `m_Data`
-`size_t Size() const` | | Returns the size of the block
-`Iterator begin()` | | Returns an `Iterator` to the start of `m_Data`
-`Iterator end()` | | Returns an `Iterator` to `m_Data + m_Size + 1` 
-`const pointer Data()` | | Returns a `const` pointer to `m_Data`
-`pointer Data()` | | Returns a pointer to `m_Data`
-`bool IsEmpty() const` | | Returns `true` if `m_Size == 0`
+`~SecureBlockBase()` | ~~XXXX~~ | Deallocates `m_Data`
+`size_t Size() const` | ~~XXXX~~ | Returns the size of the block
+`Iterator begin()` | ~~XXXX~~ | Returns an `Iterator` to the start of `m_Data`
+`Iterator end()` | ~~XXXX~~ | Returns an `Iterator` to `m_Data + m_Size + 1` 
+`const pointer Data()` | ~~XXXX~~ | Returns a `const` pointer to `m_Data`
+`pointer Data()` | ~~XXXX~~ | Returns a pointer to `m_Data`
+`bool IsEmpty() const` | ~~XXXX~~ | Returns `true` if `m_Size == 0`
 `virtual void AssignPtr(const T* data, size_t len)` | `data` pointer to `T`s <br/> `len` Length of `data` | No default implementation. 
 `template<class Al> void AssignBlock(const SecureBlockBase<T,Al>& other)` | `Al` an arbitrary Allocator <br/> `other` A SecureBlockBase of type `T` and Allocator `Al` | Copies the contents of `other`. Internally calls `AssignPtr(other.Data(), other.Size())`
 `template<class Al> bool operator==(const SecureBlockBase<T,Al>& other) const` | `Al` An Arbitrary Allocator <br/> `other` A SecureBlockBase of type `T` and Allocator `Al` | Compares `m_Size` and the contents of `m_Data` to those of `other`

@@ -18,7 +18,7 @@ Allocator, providing stack based secure memory allocation and deallocation.
 ### Constructors
 Constructor | Parameters | Description
 --- | --- | ---
-`FixedSizeSecureAllocator() = default;` | | Default Constructor  
+`FixedSizeSecureAllocator() = default` | ~~XXXX~~ | Default Constructor  
 
 ### Functions
 

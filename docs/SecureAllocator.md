@@ -17,7 +17,7 @@ Allocator, providing secure memory allocation and deallocation.
 ### Constructors
 | Constructor | Parameters | Description |
 | --- | --- | --- |
-| `SecureAllocator() = default;` | ~~XXXX~~ | Default Constructor |
+| `SecureAllocator() = default;` | &nbsp; | Default Constructor |
 
 ### Functions
 

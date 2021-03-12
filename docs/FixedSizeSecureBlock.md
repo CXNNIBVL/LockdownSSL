@@ -22,7 +22,7 @@ Container type with stack based secure memory Allocation and Deallocation
 ### Constructors
 | Constructor | Parameters | Description |
 | --- | --- | --- |
-| `FixedSizeSecureBlock()` | ~~XXXX~~ | Default Constructor |
+| `FixedSizeSecureBlock()` | &nbsp; | Default Constructor |
 | `FixedSizeSecureBlock(T val)` | `val` the value to fill the block with | Fills the block with `val` |
 | `FixedSizeSecureBlock(const FixedSizeSecureBlock<T, S>& Other)` | `Other` Another FixedSizeSecureBlock of type `T` and size `S` | Creates a FixedSizeSecureBlock from another FixedSizeSecureBlock |
 

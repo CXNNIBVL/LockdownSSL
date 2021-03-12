@@ -10,6 +10,7 @@ Container type with secure memory Allocation and Deallocation
 ***
 
 ## Inheritance
+
 | Class | Mode | Links |
 | --- | --- | --- |
 | `SecureBlockBase<T, SecureAllocator<T>>` | `public` | [SecureBlockBase](./SecureBlockBase.md) <br/> [SecureAllocator](./SecureAllocator.md) |
@@ -19,6 +20,7 @@ Container type with secure memory Allocation and Deallocation
 ## Public Members
 
 ### Constructors
+
 | Constructor | Parameters | Description |
 | --- | --- | --- |
 | `explicit SecureBlock(size_t Size=0)` | `Size` The size of the block | Requests `Size` from `m_Alloc` and sets all the contents to zero |

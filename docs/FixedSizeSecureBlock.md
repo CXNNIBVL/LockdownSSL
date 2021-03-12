@@ -11,6 +11,7 @@ Container type with stack based secure memory Allocation and Deallocation
 ***
 
 ## Inheritance
+
 | Class | Mode | Links |
 | --- | --- | --- |
 | `SecureBlockBase<T, FixedSizeSecureAllocator<T, S>>` | `public` | [SecureBlockBase](./SecureBlockBase.md) <br/> [FixedSizeSecureAllocator](./FixedSizeSecureAllocator.md) |
@@ -20,6 +21,7 @@ Container type with stack based secure memory Allocation and Deallocation
 ## Public Members
 
 ### Constructors
+
 | Constructor | Parameters | Description |
 | --- | --- | --- |
 | `FixedSizeSecureBlock()` | &nbsp; | Default Constructor |

@@ -17,6 +17,7 @@ Base class for [FixedSizeSecureBlock](./FixedSizeSecureBlock.md) and [SecureBloc
 ## Public Members
 
 ### Constructors
+
 | Constructor | Parameters | Description |
 | --- | --- | --- |
 | `explicit SecureBlockBase(size_t Size=0)` | `Size` The size of the block | Requests `Size` from `m_Alloc` and sets all the contents to zero |

@@ -1,4 +1,4 @@
-# SecureBlockIterator<T>
+# SecureBlockIterator\<T>
 
 ***
 
@@ -15,23 +15,23 @@ A bare bones Iterator over a pointer
 ## Public Members
 
 ### Constructors
-Constructor | Parameters | Description
---- | --- | ---
-`SecureBlockIterator(pointer ptr)` | `ptr` pointer to a block of memory | Constructs an Iterator from a `pointer`
+| Constructor | Parameters | Description |
+| --- | --- | --- |
+| `SecureBlockIterator(pointer ptr)` | `ptr` pointer to a block of memory | Constructs an Iterator from a `pointer` |
 
 ### Functions
 
-Function | Parameters | Description
---- | --- | ---
-`SecureBlockIterator& operator++() ` | ~~XXXX~~ | Increments the pointer address
-`SecureBlockIterator operator++(int)` | ~~XXXX~~ | Increments the current pointer position's value
-`SecureBlockIterator& operator--()` | ~~XXXX~~ | Decrements the pointer address
-`SecureBlockIterator operator--(int)` | ~~XXXX~~ | Decrements the current pointer position's value
-`reference operator[](int index)` | `index` the index to look up | Returns the value pointed to by the current pointer + index
-`pointer operator->()` | ~~XXXX~~ | Returns the memory address of the current pointer
-`reference operator*()` | ~~XXXX~~ | Returns the current pointers value
-`bool operator==(const SecureBlockIterator& other)` | `other` Another SecureBlockIterator | Compares the memory addresses
-`bool operator!=(const SecureBlockIterator& other)` | `other` Another SecureBlockIterator | Returns the inverse of `operator==`
+| Function | Parameters | Description |
+| --- | --- | --- |
+| `SecureBlockIterator& operator++() ` | ~~XXXX~~ | Increments the pointer address |
+| `SecureBlockIterator operator++(int)` | ~~XXXX~~ | Increments the current pointer position's value |
+| `SecureBlockIterator& operator--()` | ~~XXXX~~ | Decrements the pointer address |
+| `SecureBlockIterator operator--(int)` | ~~XXXX~~ | Decrements the current pointer position's value |
+| `reference operator[](int index)` | `index` the index to look up | Returns the value pointed to by the current pointer + index |
+| `pointer operator->()` | ~~XXXX~~ | Returns the memory address of the current pointer |
+| `reference operator*()` | ~~XXXX~~ | Returns the current pointers value |
+| `bool operator==(const SecureBlockIterator& other)` | `other` Another SecureBlockIterator | Compares the memory addresses |
+| `bool operator!=(const SecureBlockIterator& other)` | `other` Another SecureBlockIterator | Returns the inverse of `operator==` |
 
 ***
 

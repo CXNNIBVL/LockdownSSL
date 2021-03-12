@@ -1,4 +1,4 @@
-# SecureAllocator<T>
+# SecureAllocator\<T>
 
 ***
 
@@ -15,17 +15,17 @@ Allocator, providing secure memory allocation and deallocation.
 ## Public Members
 
 ### Constructors
-Constructor | Parameters | Description
---- | --- | ---
-`SecureAllocator() = default;` | ~~XXXX~~ | Default Constructor
+| Constructor | Parameters | Description |
+| --- | --- | --- |
+| `SecureAllocator() = default;` | ~~XXXX~~ | Default Constructor |
 
 ### Functions
 
-Function | Parameters | Description
---- | --- | ---
-`pointer Allocate(size_type num)` | `num` Number of elements to allocate | Allocates the requested size `num` and returns a `pointer`. If `num == 0`, then `Allocate` returns a `nullptr`
-`pointer Reallocate(pointer ptr, size_type oldSize, size_type newSize)` | `ptr` the old pointer <br/> `oldSize` the old size <br/> `newSize` the new size | Reallocates the old `ptr` to fit `newSize` <br/> if `newSize <= oldSize` then the old pointer is returned
-`void Deallocate(void* ptr, size_type num)` | `ptr` the pointer to deallocate <br/> `num` size of the pointer | Deallocates `num * sizeof(T)` bytes of the pointer
+| Function | Parameters | Description |
+| --- | --- | --- |
+| `pointer Allocate(size_type num)` | `num` Number of elements to allocate | Allocates the requested size `num` and returns a `pointer`. If `num == 0`, then `Allocate` returns a `nullptr` |
+| `pointer Reallocate(pointer ptr, size_type oldSize, size_type newSize)` | `ptr` the old pointer <br/> `oldSize` the old size <br/> `newSize` the new size | Reallocates the old `ptr` to fit `newSize` <br/> if `newSize <= oldSize` then the old pointer is returned |
+| `void Deallocate(void* ptr, size_type num)` | `ptr` the pointer to deallocate <br/> `num` size of the pointer | Deallocates `num * sizeof(T)` bytes of the pointer |
 
 ***
 

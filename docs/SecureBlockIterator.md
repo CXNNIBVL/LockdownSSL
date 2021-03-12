@@ -15,6 +15,7 @@ A bare bones Iterator over a pointer
 ## Public Members
 
 ### Constructors
+
 | Constructor | Parameters | Description |
 | --- | --- | --- |
 | `SecureBlockIterator(pointer ptr)` | `ptr` pointer to a block of memory | Constructs an Iterator from a `pointer` |

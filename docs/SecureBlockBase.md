@@ -1,4 +1,4 @@
-# `SecureBlockBase<T, A>`
+# SecureBlockBase<T, A>
 
 ***
 

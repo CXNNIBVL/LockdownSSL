@@ -1,4 +1,4 @@
-# `FixedSizeSecureAllocator<T, S>`
+# FixedSizeSecureAllocator<T, S>
 
 ***
 

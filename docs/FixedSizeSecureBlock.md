@@ -1,4 +1,4 @@
-# `FixedSizeSecureBlock<T, S>`
+# FixedSizeSecureBlock<T, S>
 
 ***
 

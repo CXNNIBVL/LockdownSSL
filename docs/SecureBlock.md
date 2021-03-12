@@ -1,4 +1,4 @@
-# `SecureBlock<T>`
+# SecureBlock<T>
 
 ***
 

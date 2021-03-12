@@ -1,4 +1,4 @@
-# `SecureBlockIterator<T>`
+# SecureBlockIterator<T>
 
 ***
 

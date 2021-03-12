@@ -1,4 +1,4 @@
-# `SecureAllocator<T>`
+# SecureAllocator<T>
 
 ***
 

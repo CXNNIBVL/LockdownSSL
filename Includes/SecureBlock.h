@@ -272,8 +272,8 @@ namespace LockdownSSL
 
         SecureBlock<T>& operator=(SecureBlock<T>&& Other)
         {
-        if(this != &Other)
-        {
+            if(this != &Other)
+            {
                 this->m_Alloc.Deallocate(this->m_Data, this->m_Size);
 
                 this->m_Size = Other.m_Size;
@@ -281,7 +281,7 @@ namespace LockdownSSL
 
                 Other.m_Size = 0;
                 Other.m_Data = nullptr;
-        }
+            }
         }
 
     private:

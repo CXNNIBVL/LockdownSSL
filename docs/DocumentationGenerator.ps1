@@ -1,6 +1,6 @@
 $Except = @("index.md", "Documentation.md");
 
-$text = "# Documentation`n"
+$text = "# Documentation`n***`n"
 
 $names = [System.Collections.ArrayList]@()
 

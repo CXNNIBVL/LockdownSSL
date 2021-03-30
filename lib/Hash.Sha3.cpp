@@ -75,6 +75,9 @@ void theta(word64(&state)[5][5])
 	}
 }
 
+#include <iostream>
+#include <iomanip>
+
 void rho_pi_chi(word64(&state)[5][5])
 {
 	word64 B[5][5];
@@ -99,6 +102,7 @@ void rho_pi_chi(word64(&state)[5][5])
 void iota(word64(&state)[5][5], int iteration)
 {
 	state[0][0] ^= KECCAK_RC[iteration];
+	std::cout << std::hex << KECCAK_RC[iteration] << std::endl;
 }
 
 byte* extract_from_state(word64(&state)[5][5])

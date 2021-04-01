@@ -10,13 +10,12 @@ namespace LockdownSSL::Pipeline
     {
     public:
 
-        StreamSink(std::ostream& Stream) : m_Stream(Stream) {}
-
-        ~StreamSink(){}
+        StreamSink(std::ostream& Stream) : m_oStream(Stream) {}
+        ~StreamSink(){};
 
         void ProcessData(SecureBlock<byte>& Data) override;
     
     private:
-        std::ostream& m_Stream;
+        std::ostream& m_oStream;
     };
 }

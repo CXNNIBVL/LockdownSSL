@@ -34,19 +34,12 @@ namespace LockdownSSL
             {
                 return ptr;
             }
-            else if(oldSize > newSize)
-            {
-                Deallocate(ptr + newSize, oldSize - newSize);
-                return ptr;
-            }
-            else
-            {
-                pointer new_ptr = Allocate(newSize);
-                std::memcpy(new_ptr, ptr, oldSize * sizeof(T));
-                Deallocate(ptr, oldSize); 
+        
+            pointer new_ptr = Allocate(newSize);
+            std::memcpy(new_ptr, ptr, (oldSize > newSize ? newSize : oldSize) * sizeof(T));
+            Deallocate(ptr, oldSize); 
 
-                return new_ptr;
-            }
+            return new_ptr;
         }
 
         void Deallocate(void* ptr, size_type num)

@@ -1,32 +1,19 @@
 #include "pipeline/StringSource.h"
 #include "pipeline/StringSink.h"
 
-namespace STL = ::std;
 using namespace LockdownSSL::Pipeline;
 
-StringSource::StringSource(const byte* Data, size_t Length, TransformationFilter* AttachedTransformation)
+StringSource::StringSource(const byte* Data, size_t Length)
 {   
-    if(AttachedTransformation)
-    {
-        m_Buffer = SecureBlock<byte>(Data, Length);
-
-        AttachedTransformation->ProcessData(m_Buffer);
-        delete AttachedTransformation;
-    }
+    m_Buffer = SecureBlock<byte>(Data, Length);
 }
 
-StringSource::StringSource(const char* Data, TransformationFilter* AttachedTransformation)
+StringSource::StringSource(const char* Data)
 {
-    if(AttachedTransformation)
-    {
-        size_t len = STL::strlen(Data);
-    
-        m_Buffer = SecureBlock<byte>(len);
-        STL::memcpy(m_Buffer.Data(), Data, len * sizeof(byte));
+    size_t len = std::strlen(Data);
 
-        AttachedTransformation->ProcessData(m_Buffer);
-        delete AttachedTransformation;
-    }
+    m_Buffer = SecureBlock<byte>(len);
+    std::memcpy(m_Buffer.Data(), Data, len * sizeof(byte));
 }
 
 void StringSink::ProcessData(SecureBlock<byte>& Data)

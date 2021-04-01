@@ -10,10 +10,8 @@ namespace LockdownSSL::Pipeline
     {
     public:
 
-        StringSink(std::string& Buffer)
-            : m_Buffer(Buffer) {}
-
-        ~StringSink(){}
+        StringSink(std::string& Buffer) : m_Buffer(Buffer) {}
+        ~StringSink(){};
 
         void ProcessData(SecureBlock<byte>& Data) override;
 

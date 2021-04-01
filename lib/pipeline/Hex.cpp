@@ -20,16 +20,16 @@ namespace LockdownSSL::Pipeline
 {
     void HexEncoder::ProcessData(SecureBlock<byte>& Data)
     {
-        const char* hex_chars = m_Config.m_Case == m_Config.UPPERCASE ? uHexChars : lHexChars;
-        size_t len_header = m_Config.m_Header.size();
-        size_t len_seperator = m_Config.m_Seperator.size();
-        size_t len_terminator = m_Config.m_Terminator.size();
+        const char* hex_chars = m_Case == UPPERCASE ? uHexChars : lHexChars;
+        size_t len_header = m_Header.size();
+        size_t len_seperator = m_Seperator.size();
+        size_t len_terminator = m_Terminator.size();
 
         SecureBlock<byte> hexString;
 
         hexString.Grow(len_header);
         for(size_t a = 0; a < len_header; a++)
-            hexString[a] = m_Config.m_Header[a];
+            hexString[a] = m_Header[a];
         
         size_t i = len_header;
         size_t group_ctr = 0;
@@ -41,25 +41,22 @@ namespace LockdownSSL::Pipeline
             hexString[i++] = hex_chars[ ( *it & 0xF0 ) >> 4 ];
             hexString[i++] = hex_chars[ ( *it & 0x0F ) ];
 
-            if(group_ctr == m_Config.m_GroupSize && ( it + m_Config.m_GroupSize ) !=  &(Data.end()[0]))
+            if(group_ctr == m_GroupSize && ( it + m_GroupSize ) !=  &(Data.end()[0]))
             {
                 group_ctr = 0;
 
                 hexString.Grow(len_seperator);
 
                 for(size_t a = 0; a < len_seperator; a++, i++)
-                    hexString[i] = m_Config.m_Seperator[a];
+                    hexString[i] = m_Seperator[a];
             }
         }
 
         hexString.Grow(len_terminator);
         for(size_t a = 0; a < len_terminator; a++, i++)
-            hexString[i] = m_Config.m_Terminator[a];
+            hexString[i] = m_Terminator[a];
 
         Data = std::move(hexString);
-
-        if(m_AttatchedTransformation)
-            m_AttatchedTransformation->ProcessData(Data);
     }
 
     void HexDecoder::ProcessData(SecureBlock<byte>& Data)
@@ -81,8 +78,5 @@ namespace LockdownSSL::Pipeline
         }
 
         Data = std::move(decoded);
-
-        if(m_AttatchedTransformation)
-            m_AttatchedTransformation->ProcessData(Data);
     }
 }

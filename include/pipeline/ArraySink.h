@@ -8,8 +8,8 @@ namespace LockdownSSL::Pipeline
     {
     public:
 
-        ArraySink(byte* Buffer, size_t Size)
-            : m_Buffer(Buffer), m_Size(Size) {}
+        ArraySink(byte* Buffer, size_t Size) : m_Buffer(Buffer), m_Size(Size) {}
+        ~ArraySink(){};
 
         void ProcessData(SecureBlock<byte>& Data) override;
 

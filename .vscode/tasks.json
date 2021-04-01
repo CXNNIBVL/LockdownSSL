@@ -30,30 +30,39 @@
         
         {
             "type": "shell",
-            "label": "Build LockdownSSL Library",
+            "label": "Pack Library",
             "dependsOn": "Build LockdownSSL Obj",
             "command": "ar",
             "args": 
             [
-                "-rc", "${workspaceFolder}/build/libLockdownSSL.a",
+                "-rvs", "${workspaceFolder}/build/libLockdownSSL.a",
                 "${workspaceFolder}/build/intermediate/*.o"
             ]
-        }, 
+        },
+
+        {
+            "type": "shell",
+            "label": "Build LockdownSSL Library",
+            "dependsOn": "Pack Library",
+            "command": "ranlib",
+            "args": ["${workspaceFolder}/build/libLockdownSSL.a"]
+        },
         /* ========================= */
         
         /* ===== Build LockdownSSL Test Suite ===== */
         {
             "type": "shell",
             "label": "Build LockdownSSL Test Suite",
-            "dependsOn": ["Build LockdownSSL Library", "rmdir intermediate"],
+            "dependsOn": "Build LockdownSSL Library",
             "command": "g++",
             "args": 
             [
                 "-Wall",
                 "-Wno-sign-compare",
                 "-I", "${workspaceFolder}/include/",
-                "-L", "${workspaceFolder}/build/libLockdownSSL.a",
+                "-L", "${workspaceFolder}/build/",
                 "-g", "${workspaceFolder}/build/test/LockdownSSLTest.cpp",
+                "-l", "LockdownSSL",
                 "-o", "${workspaceFolder}/build/LockdownSSLTest.exe"
             ]
         },
@@ -63,7 +72,7 @@
         {
             "type": "shell",
             "label": "Build Debug LockdownSSL",
-            "dependsOn": ["Build LockdownSSL Library", "rmdir intermediate"],
+            "dependsOn": "Build LockdownSSL Library",
             "command": "g++",
             "problemMatcher": "$gcc",
             "args": 
@@ -71,8 +80,9 @@
                 "-Wall",
                 "-Wno-sign-compare",
                 "-I", "${workspaceFolder}/include/",
-                "-L", "${workspaceFolder}/build/libLockdownSSL.a",
+                "-L", "${workspaceFolder}/build/",
                 "-g", "${workspaceFolder}/Application/main.cpp",
+                "-l", "LockdownSSL",
                 "-o", "${workspaceFolder}/Application/main.exe"
             ]
         },

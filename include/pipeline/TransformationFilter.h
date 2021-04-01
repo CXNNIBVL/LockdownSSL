@@ -8,15 +8,12 @@ namespace LockdownSSL::Pipeline
     class TransformationFilter
     {
     public:
+        TransformationFilter() = default;
+        TransformationFilter(const TransformationFilter& Other) = delete;
+        TransformationFilter(TransformationFilter&& Other) = delete;
 
-        explicit TransformationFilter(TransformationFilter* AttachedTransformation=nullptr)
-            : m_AttatchedTransformation(AttachedTransformation) {}
-
-        virtual ~TransformationFilter() { delete m_AttatchedTransformation; }
+        virtual ~TransformationFilter(){}
 
         virtual void ProcessData(SecureBlock<byte>& Data) = 0;
-        
-    protected:
-        TransformationFilter* m_AttatchedTransformation;
     };
 }

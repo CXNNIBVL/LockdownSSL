@@ -1,4 +1,4 @@
-#include "lockdownssl/Keccak.h"
+#include "lockdownssl/KeccakCore.h"
 #include "misc/BitRotation.h"
 #include "misc/Endianness.h"
 
@@ -140,13 +140,14 @@ START_EXTRACT:
         do
         {
             T tmp = state[y][x++];
+            byte* btmp = (byte*) tmp;
+            BReverseEndianness<byte>(btmp, sizeof(T));
 
             if(x == 5) { x = 0; y++; }
 
             for(byte i = 0; i < sizeof(T) && ( processed_bytes + 1 ) % ( Rate + 1 ) != 0 && processed_bytes < DigestSize; i++, processed_bytes++)
             {
-                word64 mask = 0x00000000000000FF;
-                Data[processed_bytes] = (byte) ( ( tmp & (mask << 8 * i) ) >> 8 * i );
+                Data[processed_bytes] = btmp[i];
             }
 
         }while( ( processed_bytes + 1) % ( Rate + 1 ) != 0 && processed_bytes < DigestSize);

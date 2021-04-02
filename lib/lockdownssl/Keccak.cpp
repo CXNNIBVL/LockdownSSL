@@ -1,5 +1,6 @@
 #include "lockdownssl/Keccak.h"
 #include "misc/BitRotation.h"
+#include "misc/Endianness.h"
 
 using namespace LockdownSSL;
 
@@ -23,8 +24,8 @@ static const word64 s_KECCAK_RC_RAW[24] =
 template<typename T>
 static inline T RoundConstant(byte round)
 {
-    word64 mask = 0xFFFFFFFFFFFFFFFF;
-    return ( s_KECCAK_RC_RAW[round] & ( mask >> 8 * ( sizeof(word64) - sizeof(T) ) ) );
+    T mask = ~0;
+    return s_KECCAK_RC_RAW[round] &  mask;
 }
 
 template<typename T>
@@ -41,9 +42,9 @@ static void Padding(SecureBlock<byte>& data, byte Rate, byte Domain)
 
     data.CleanGrow(size_padding + 1);
 
-    data[initialSize] = Domain;
+    data[initialSize] = bReverseEndianness<byte>(Domain);
 
-    data[data.Size() - 1] ^= 0x80;
+    data[data.Size() - 1] ^= bReverseEndianness<byte>(0x80);
 }
 
 #define THETA_PERM_1(i) C[i] = (state[0][i]) ^ (state[1][i]) ^ (state[2][i]) ^ (state[3][i]) ^ (state[4][i]);
@@ -131,7 +132,7 @@ static void Squeeze(SecureBlock<byte>& Data, byte Rate, byte NumRounds, size_t D
 
     do
     {
-        Keccak_P(state, NumRounds);
+        Keccak_P<T>(state, NumRounds);
 
 START_EXTRACT:
         byte x = 0, y = 0;
@@ -153,17 +154,15 @@ START_EXTRACT:
     } while (processed_bytes < DigestSize);
 }
 
-
-
 template<typename T>
-T StateVal(byte* Data, byte Rate, byte& Processed)
+static T StateVal(byte* Data, byte Rate, byte& Processed)
 {
     T val = 0;
 
     for(signed char i = sizeof(T) - 1; i >= 0 && Processed < Rate; i--, Processed++)
     {
         val <<= 8;
-        val |= Data[i];
+        val |= bReverseEndianness<byte>(Data[i]);
     }
 
     return val;
@@ -182,10 +181,11 @@ static void Sponge(SecureBlock<byte>& Data, byte Rate, byte NumRounds, size_t Di
     };
 
     size_t num_parts = Data.Size() / Rate;
+    byte x, y, processed;
 
     for(size_t p = 0; p < num_parts; p++)
     {
-        byte x = 0, y = 0, processed = 0;
+        x = 0; y = 0; processed = 0;
 
         while(processed < Rate)
         {
@@ -194,7 +194,7 @@ static void Sponge(SecureBlock<byte>& Data, byte Rate, byte NumRounds, size_t Di
             if(x == 5) { x = 0; y++; }
         }
         
-        Keccak_P(state, NumRounds);
+        Keccak_P<T>(state, NumRounds);
     }
 
     Squeeze(Data, Rate, NumRounds, DigestSize, state);

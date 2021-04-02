@@ -28,7 +28,7 @@
 			"name": "Test Suite",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/build/LockdownSSLTest.exe",
+			"program": "${workspaceFolder}/bin/LockdownSSLTest.exe",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include <initializer_list>
 
 #include "lockdownssl/types.h"
 
@@ -228,6 +229,11 @@ namespace LockdownSSL
         SecureBlock(const SecureBlock<T>& Other) : SecureBlockBase<T, Alloc>(Other) {}
 
         SecureBlock(const T* Data, size_t Size) : SecureBlockBase<T, Alloc>(Data, Size) {}
+
+        SecureBlock(std::initializer_list<T> const & List) : SecureBlockBase<T, Alloc>(List.size())
+        {
+            std::memcpy(this->m_Data, List.begin(), this->m_Size * sizeof(T));
+        }
 
         SecureBlock(SecureBlock<T>&& Other)
         {

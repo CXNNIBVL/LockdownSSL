@@ -6,7 +6,7 @@
             "type": "shell",
             "label": "rmdir intermediate",
             "command": "rm",
-            "args": [ "-r", "-f", "${workspaceFolder}/build/intermediate/*.o" ]
+            "args": [ "-r", "-f", "${workspaceFolder}/bin/obj/*.o" ]
         },
 
         /* ===== Build Library ===== */
@@ -16,7 +16,7 @@
             "command": "g++",
             "problemMatcher": "$gcc",
             "options": {
-                "cwd": "${workspaceFolder}/build/intermediate/",
+                "cwd": "${workspaceFolder}/bin/obj/",
             },
             "args": 
             [
@@ -35,8 +35,8 @@
             "command": "ar",
             "args": 
             [
-                "-rvs", "${workspaceFolder}/build/libLockdownSSL.a",
-                "${workspaceFolder}/build/intermediate/*.o"
+                "-rvs", "${workspaceFolder}/bin/libLockdownSSL.a",
+                "${workspaceFolder}/bin/obj/*.o"
             ]
         },
 
@@ -45,7 +45,7 @@
             "label": "Build LockdownSSL Library",
             "dependsOn": "Pack Library",
             "command": "ranlib",
-            "args": ["${workspaceFolder}/build/libLockdownSSL.a"]
+            "args": ["${workspaceFolder}/bin/libLockdownSSL.a"]
         },
         /* ========================= */
         
@@ -59,11 +59,12 @@
             [
                 "-Wall",
                 "-Wno-sign-compare",
-                "-I", "${workspaceFolder}/include/",
-                "-L", "${workspaceFolder}/build/",
-                "-g", "${workspaceFolder}/build/test/LockdownSSLTest.cpp",
+                "-I", "${workspaceFolder}/include/", 
+                "-I", "${workspaceFolder}/test/vector/",
+                "-L", "${workspaceFolder}/bin/",
+                "-g", "${workspaceFolder}/test/LockdownSSLTest.cpp",
                 "-l", "LockdownSSL",
-                "-o", "${workspaceFolder}/build/LockdownSSLTest.exe"
+                "-o", "${workspaceFolder}/bin/LockdownSSLTest.exe"
             ]
         },
         /* ========================= */
@@ -80,7 +81,7 @@
                 "-Wall",
                 "-Wno-sign-compare",
                 "-I", "${workspaceFolder}/include/",
-                "-L", "${workspaceFolder}/build/",
+                "-L", "${workspaceFolder}/bin/",
                 "-g", "${workspaceFolder}/Application/main.cpp",
                 "-l", "LockdownSSL",
                 "-o", "${workspaceFolder}/Application/main.exe"

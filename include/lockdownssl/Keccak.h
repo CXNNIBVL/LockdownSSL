@@ -1,30 +1,44 @@
 #pragma once
 
 #include "lockdownssl/KeccakCore.h"
+#include "lockdownssl/HashFunction.h"
 
 namespace LockdownSSL
 {
-    class Keccak_224 : public Keccak_P_1600
+    class Keccak : private Keccak_P_1600, public HashFunction
     {
     public:
-        Keccak_224() : Keccak_P_1600(144, 24, 0x01, 28){}
+
+        SecureBlock<byte> Digest() override { Hash(m_Data); return m_Data; }
+        size_t DigestSize() { return GetDigestSize(); }
+        size_t BlockSize() { return GetRate(); }
+    
+    protected:
+        Keccak(byte Rate, byte Domain, size_t DigestSize) 
+            : Keccak_P_1600(Rate, 24, Domain, DigestSize){}
     };
 
-    class Keccak_256 : public Keccak_P_1600
+    class Keccak_224 : public Keccak
     {
     public:
-        Keccak_256() : Keccak_P_1600(136, 24, 0x01, 32){}
+        Keccak_224() : Keccak(144, 0x01, 28){}
     };
 
-    class Keccak_384 : public Keccak_P_1600
+    class Keccak_256 : public Keccak
     {
     public:
-        Keccak_384() : Keccak_P_1600(104, 24, 0x01, 48){}
+        Keccak_256() : Keccak(136, 0x01, 32){}
     };
 
-    class Keccak_512 : public Keccak_P_1600
+    class Keccak_384 : public Keccak
     {
     public:
-        Keccak_512() : Keccak_P_1600(72, 24, 0x01, 64){}
+        Keccak_384() : Keccak(104, 0x01, 48){}
+    };
+
+    class Keccak_512 : public Keccak
+    {
+    public:
+        Keccak_512() : Keccak(72, 0x01, 64){}
     };
 }

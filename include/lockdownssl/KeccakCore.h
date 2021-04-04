@@ -1,22 +1,27 @@
 #pragma once
 
-#include "lockdownssl/HashFunction.h"
+#include "lockdownssl/SecureBlock.h"
 
 namespace LockdownSSL
 {
     template<typename T>
-    class Keccak : public HashFunction
+    class KeccakSponge
     {
     public:
-        Keccak() : m_Rate(0), m_NumRounds(0), m_Domain(0), m_DigestSize(0){}
+        KeccakSponge() : m_Rate(0), m_NumRounds(0), m_Domain(0), m_DigestSize(0){}
+        explicit KeccakSponge(byte Rate, byte NumRounds, byte Domain, size_t DigestSize)
+            : m_Rate(Rate), m_NumRounds(NumRounds), m_Domain(Domain), m_DigestSize(DigestSize){}
 
-        explicit Keccak(byte Rate, byte NumRounds, byte Domain, size_t DigestSize)
-            : m_Rate(Rate), m_NumRounds(NumRounds), m_Domain(Domain), m_DigestSize(DigestSize) {}
+        void Hash(SecureBlock<byte>& Data);
 
-        void Digest(SecureBlock<byte>& Data) override;
+        void SetRate(byte Rate) { m_Rate = Rate; }
+        byte GetRate() { return m_Rate; }
+        
+        void SetNumRounds(byte NumRounds) { m_NumRounds = NumRounds; }
+        void SetDomain(byte Domain) { m_Domain = Domain; }
 
-        size_t DigestSize() override { return m_DigestSize; }
-        size_t BlockSize() override { return m_Rate; }
+        void SetDigestSize(size_t DigestSize) { m_DigestSize = DigestSize; }
+        size_t GetDigestSize() { return m_DigestSize; }
 
     private:
         byte m_Rate;
@@ -26,8 +31,8 @@ namespace LockdownSSL
     };
 
     //Supported Keccak-P instances
-    typedef Keccak<word64> Keccak_P_1600;
-    typedef Keccak<word32> Keccak_P_800;
-    typedef Keccak<word16> Keccak_P_400;
-    typedef Keccak<byte> Keccak_P_200;
+    typedef KeccakSponge<word64> Keccak_P_1600;
+    typedef KeccakSponge<word32> Keccak_P_800;
+    typedef KeccakSponge<word16> Keccak_P_400;
+    typedef KeccakSponge<byte> Keccak_P_200;
 }

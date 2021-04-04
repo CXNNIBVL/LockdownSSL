@@ -201,13 +201,13 @@ static void Sponge(SecureBlock<byte>& Data, byte Rate, byte NumRounds, size_t Di
 }
 
 template<typename T>
-void Keccak<T>::Digest(SecureBlock<byte>& Data)
+void KeccakSponge<T>::Hash(SecureBlock<byte>& Data)
 {
     Padding(Data, m_Rate, m_Domain);
     Sponge<T>(Data, m_Rate, m_NumRounds, m_DigestSize);
 }
 
-template class Keccak<word64>;
-template class Keccak<word32>;
-template class Keccak<word16>;
-template class Keccak<byte>;
+template class KeccakSponge<word64>;
+template class KeccakSponge<word32>;
+template class KeccakSponge<word16>;
+template class KeccakSponge<byte>;

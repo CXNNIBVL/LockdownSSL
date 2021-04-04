@@ -10,7 +10,11 @@ namespace LockdownSSL::Pipeline
     public:
         HashTransformation(HashFunction& Hash) : m_HashFunction(Hash){}
 
-        void ProcessData(SecureBlock<byte>& Data) override;
+        void ProcessData(SecureBlock<byte>& Data)
+        {
+            m_HashFunction.Put(Data);
+            Data.AssignBlock( m_HashFunction.Digest() );
+        }
     
     private:
         HashFunction& m_HashFunction;

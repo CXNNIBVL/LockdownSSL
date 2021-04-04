@@ -3,7 +3,6 @@
 #include "setup.h"
 
 #include "lockdownssl/Sha3.h"
-#include "lockdownssl/Shake.h"
 #include "lockdownssl/Keccak.h"
 
 //SHA3 & SHAKE vectors at https://csrc.nist.gov/projects/cryptographic-standards-and-guidelines/example-values
@@ -42,44 +41,36 @@ std::string shake256_test1 = sha3_224_test1;
 std::string shake256_expected1 = "CD8A920ED141AA0407A22D59288652E9D9F1A7EE0C1E7C1CA699424DA84A904D2D700CAAE7396ECE96604440577DA4F3AA22AEB8857F961C4CD8E06F0AE6610B1048A7F64E1074CD629E85AD7566048EFC4FB500B486A3309A8F26724C0ED628001A1099422468DE726F1061D99EB9E93604D5AA7467D4B1BD6484582A384317D7F47D750B8F5499512BB85A226C4243556E696F6BD072C5AA2D9B69730244B56853D16970AD817E213E470618178001C9FB56C54FEFA5FEE67D2DA524BB3B0B61EF0E9114A92CDBB6CCCB98615CFE76E3510DD88D1CC28FF99287512F24BFAFA1A76877B6F37198E3A641C68A7C42D45FA7ACC10DAE5F3CEFB7B735F12D4E589F7A456E78C0F5E4C4471FFFA5E4FA0514AE974D8C2648513B5DB494CEA847156D277AD0E141C24C7839064CD08851BC2E7CA109FD4E251C35BB0A04FB05B364FF8C4D8B59BC303E25328C09A882E952518E1A8AE0FF265D61C465896973D7490499DC639FB8502B39456791B1B6EC5BCC5D9AC36A6DF622A070D43FED781F5F149F7B62675E7D1A4D6DEC48C1C7164586EAE06A51208C0B791244D307726505C3AD4B26B6822377257AA152037560A739714A3CA79BD605547C9B78DD1F596F2D4F1791BC689A0E9B799A37339C04275733740143EF5D2B58B96A363D4E08076A1A9D7846436E4DCA5728B6F760EEF0CA92BF0BE5615E96959D767197A0BEEB";
 
 
-//KECCAL vectors at https://emn178.github.io/online-tools/keccak_256.html
+//KECCAK vectors at https://emn178.github.io/online-tools/keccak_256.html
 std::string keccak224_test0 = "";
 std::string keccak224_expected0 = "f71837502ba8e10837bdd8d365adb85591895602fc552b48b7390abd";
-std::string keccak224_test1 = sha3_224_test1;
-std::string keccak224_expected1 = "8f8e45fdb199e0cf3bef0e1647e6e40986e620dc16c82cd4f17b37e5";
 
 std::string keccak256_test0 = "";
 std::string keccak256_expected0 = "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470";
-std::string keccak256_test1 = sha3_224_test1;
-std::string keccak256_expected1 = "df5247d9373a6d163bc9f38ef0ffcbd5b0badda54e924f07acb0d1bb45b6e71f";
 
 std::string keccak384_test0 = "";
 std::string keccak384_expected0 = "2c23146a63a29acf99e73b88f8c24eaa7dc60aa771780ccc006afbfa8fe2479b2dd2b21362337441ac12b515911957ff";
-std::string keccak384_test1 = sha3_224_test1;
-std::string keccak384_expected1 = "74aeb48b7b280daaa356eef14b9a52c99588422cdcae63eeb40d1db8558ed6a71604a980cacfe94fe835c0e9c8cc6c8c";
 
 std::string keccak512_test0 = "";
 std::string keccak512_expected0 = "0eab42de4c3ceb9235fc91acffe746b29c29a8c366b7c60e4e67c466f36a4304c00fa9caf9d87976ba469bcbe06713b435f091ef2769fb160cdab33d3670680e";
-std::string keccak512_test1 = sha3_224_test1;
-std::string keccak512_expected1 = "d905b1f8fd86ca991302f558b4ba0918cd9a503d583fdc5da6b6c4b4322097f58ea0f08fc9f87b8dd5e42f72b82ce635876f26e423693d3ba0a555228b6d341b";
 
 void VerifyKeccak()
 {
-    // Sha3_224 sha3_224;
-    // VerifyHashFunction("Sha3_224 Test 0", sha3_224, sha3_224_test0, sha3_224_expected0);
-    // VerifyHashFunction("Sha3_224 Test 1", sha3_224, sha3_224_test1, sha3_224_expected1);
+    Sha3_224 sha3_224;
+    VerifyHashFunction("Sha3_224 Test 0", sha3_224, sha3_224_test0, sha3_224_expected0);
+    VerifyHashFunction("Sha3_224 Test 1", sha3_224, sha3_224_test1, sha3_224_expected1);
 
-    // Sha3_256 sha3_256;
-    // VerifyHashFunction("Sha3_256 Test 0", sha3_256, sha3_256_test0, sha3_256_expected0);
-    // VerifyHashFunction("Sha3_256 Test 1", sha3_256, sha3_256_test1, sha3_256_expected1);
+    Sha3_256 sha3_256;
+    VerifyHashFunction("Sha3_256 Test 0", sha3_256, sha3_256_test0, sha3_256_expected0);
+    VerifyHashFunction("Sha3_256 Test 1", sha3_256, sha3_256_test1, sha3_256_expected1);
 
-    // Sha3_384 sha3_384;
-    // VerifyHashFunction("Sha3_384 Test 0", sha3_384, sha3_384_test0, sha3_384_expected0);
-    // VerifyHashFunction("Sha3_384 Test 1", sha3_384, sha3_384_test1, sha3_384_expected1);
+    Sha3_384 sha3_384;
+    VerifyHashFunction("Sha3_384 Test 0", sha3_384, sha3_384_test0, sha3_384_expected0);
+    VerifyHashFunction("Sha3_384 Test 1", sha3_384, sha3_384_test1, sha3_384_expected1);
 
-    // Sha3_512 sha3_512;
-    // VerifyHashFunction("Sha3_512 Test 0", sha3_512, sha3_512_test0, sha3_512_expected0);
-    // VerifyHashFunction("Sha3_512 Test 1", sha3_512, sha3_512_test1, sha3_512_expected1);
+    Sha3_512 sha3_512;
+    VerifyHashFunction("Sha3_512 Test 0", sha3_512, sha3_512_test0, sha3_512_expected0);
+    VerifyHashFunction("Sha3_512 Test 1", sha3_512, sha3_512_test1, sha3_512_expected1);
 
     Shake_128 shake_128_test0(shake128_test0_outlen);
     VerifyHashFunction("Shake_128 Test 0", shake_128_test0, shake128_test0, shake128_expected0);
@@ -95,17 +86,13 @@ void VerifyKeccak()
 
     Keccak_224 keccak_224;
     VerifyHashFunction("Keccak_224 Test 0", keccak_224, keccak224_test0, keccak224_expected0);
-    VerifyHashFunction("Keccak_224 Test 1", keccak_224, keccak224_test1, keccak224_expected1);
 
     Keccak_256 keccak_256;
     VerifyHashFunction("Keccak_256 Test 0", keccak_256, keccak256_test0, keccak256_expected0);
-    VerifyHashFunction("Keccak_256 Test 1", keccak_256, keccak256_test1, keccak256_expected1);
 
     Keccak_384 keccak_384;
     VerifyHashFunction("Keccak_384 Test 0", keccak_384, keccak384_test0, keccak384_expected0);
-    VerifyHashFunction("keccak_384 Test 1", keccak_384, keccak384_test1, keccak384_expected1);
 
     Keccak_512 keccak_512;
     VerifyHashFunction("Keccak_512 Test 0", keccak_512, keccak512_test0, keccak512_expected0);
-    VerifyHashFunction("Keccak_512 Test 1", keccak_512, keccak512_test1, keccak512_expected1);
 }

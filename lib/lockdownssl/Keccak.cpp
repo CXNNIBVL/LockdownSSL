@@ -135,22 +135,21 @@ static void Squeeze(SecureBlock<byte>& Data, byte Rate, byte NumRounds, size_t D
         Keccak_P<T>(state, NumRounds);
 
 START_EXTRACT:
-        byte x = 0, y = 0;
-
+        byte x = 0, y = 0, processed_internal = 0;
+        
         do
         {
             T tmp = state[y][x++];
-            byte* btmp = (byte*) tmp;
-            BReverseEndianness<byte>(btmp, sizeof(T));
 
             if(x == 5) { x = 0; y++; }
 
-            for(byte i = 0; i < sizeof(T) && ( processed_bytes + 1 ) % ( Rate + 1 ) != 0 && processed_bytes < DigestSize; i++, processed_bytes++)
+            for(byte i = 0; i < sizeof(T) && ( processed_internal + 1 ) % ( Rate + 1 ) != 0 && processed_bytes < DigestSize; i++, processed_bytes++, processed_internal++)
             {
-                Data[processed_bytes] = btmp[i];
+                word64 mask = 0xFF;
+                Data[processed_bytes] = ( tmp & ( mask << 8 * i ) ) >> 8 * i;
             }
 
-        }while( ( processed_bytes + 1) % ( Rate + 1 ) != 0 && processed_bytes < DigestSize);
+        }while( ( processed_internal + 1) % ( Rate + 1 ) != 0 && processed_bytes < DigestSize);
 
     } while (processed_bytes < DigestSize);
 }

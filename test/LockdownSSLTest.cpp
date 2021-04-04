@@ -10,6 +10,8 @@ int main()
 {
     std::cout << sep << logo << "\n\n" << sep << std::endl;
 
+    std::cout << "***** TESTS *****" << std::endl;
+
     VerifyKeccak();
     
     PrintFailed();

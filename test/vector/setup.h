@@ -7,11 +7,16 @@
 std::vector<std::string> FailList;
 static void PrintFailed()
 {
-    std::cout << "\n**** Failed Algorithms ****\n" << std::endl;
-    for(std::string Name : FailList)
+    std::cout << "\n***** FAILED ALGORITHMS *****\n" << std::endl;
+    if(FailList.size())
     {
-        std::cout << Name << std::endl;
+        for(std::string Name : FailList)
+            std::cout << Name << std::endl;
+
+        return;
     }
+
+    std::cout << "None" << std::endl;
 }
 
 static std::string GetStatus(bool Verified, std::string Algorithm)

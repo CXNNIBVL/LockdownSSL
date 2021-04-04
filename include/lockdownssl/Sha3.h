@@ -27,4 +27,16 @@ namespace LockdownSSL
     public:
         Sha3_512() : Keccak_P_1600(72, 24, 0x06, 64){}
     };
+
+    class Shake_128 : public Keccak_P_1600
+    {
+    public:
+        explicit Shake_128(size_t DigestSize) : Keccak_P_1600(168, 24, 0x1f, DigestSize){}
+    };
+
+    class Shake_256 : public Keccak_P_1600
+    {
+    public:
+        explicit Shake_256(size_t DigestSize) : Keccak_P_1600(136, 24, 0x1f, DigestSize){}
+    };
 }

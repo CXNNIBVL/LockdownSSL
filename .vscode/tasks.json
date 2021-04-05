@@ -4,48 +4,9 @@
     [
         {
             "type": "shell",
-            "label": "rmdir intermediate",
-            "command": "rm",
-            "args": [ "-r", "-f", "${workspaceFolder}/bin/obj/*.o" ]
-        },
-
-        /* ===== Build Library ===== */
-        {
-            "type": "shell",
-            "label": "Build LockdownSSL Obj",
-            "command": "g++",
-            "problemMatcher": "$gcc",
-            "options": {
-                "cwd": "${workspaceFolder}/bin/obj/",
-            },
-            "args": 
-            [
-                "-Wall",
-                "-Wno-sign-compare",
-                "-c",
-                "-I", "${workspaceFolder}/include/",
-                "-g", "${workspaceFolder}/lib/*/*.cpp",
-            ]
-        },
-        
-        {
-            "type": "shell",
-            "label": "Pack Library",
-            "dependsOn": "Build LockdownSSL Obj",
-            "command": "ar",
-            "args": 
-            [
-                "-rvs", "${workspaceFolder}/bin/libLockdownSSL.a",
-                "${workspaceFolder}/bin/obj/*.o"
-            ]
-        },
-
-        {
-            "type": "shell",
             "label": "Build LockdownSSL Library",
-            "dependsOn": "Pack Library",
-            "command": "ranlib",
-            "args": ["${workspaceFolder}/bin/libLockdownSSL.a"]
+            "command": "./buildLib.sh",
+            "options": { "cwd": "${workspaceFolder}/scripts/" }
         },
         /* ========================= */
         
@@ -76,6 +37,20 @@
             "dependsOn": "Build LockdownSSL Library",
             "command": "g++",
             "problemMatcher": "$gcc",
+            "linux":
+            {
+                "args": 
+                [
+                    "-Wall",
+                    "-Wno-sign-compare",
+                    "-pthread",
+                    "-I", "${workspaceFolder}/include/",
+                    "-L", "${workspaceFolder}/bin/",
+                    "-g", "${workspaceFolder}/Application/main.cpp",
+                    "-l", "LockdownSSL",
+                    "-o", "${workspaceFolder}/Application/main.exe"
+                ]
+            },
             "args": 
             [
                 "-Wall",

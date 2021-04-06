@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": 
+    [
+        {
+            "type": "shell",
+            "label": "Build LockdownSSL Library",
+            "command": "./buildLib.sh",
+            "options": { "cwd": "${workspaceFolder}/scripts/" }
+        },
+        /* ========================= */
+        
+        /* ===== Build LockdownSSL Test Suite ===== */
+        {
+            "type": "shell",
+            "label": "Build LockdownSSL Test Suite",
+            "dependsOn": "Build LockdownSSL Library",
+            "command": "g++",
+            "args": 
+            [
+                "-Wall",
+                "-Wno-sign-compare",
+                "-I", "${workspaceFolder}/include/", 
+                "-I", "${workspaceFolder}/test/vector/",
+                "-L", "${workspaceFolder}/bin/",
+                "-g", "${workspaceFolder}/test/LockdownSSLTest.cpp",
+                "-l", "LockdownSSL",
+                "-o", "${workspaceFolder}/bin/LockdownSSLTest.exe"
+            ]
+        },
+        /* ========================= */
+
+        /* ===== Build Debug LockdownSSL ===== */
+        {
+            "type": "shell",
+            "label": "Build Debug LockdownSSL",
+            "dependsOn": "Build LockdownSSL Library",
+            "command": "g++",
+            "problemMatcher": "$gcc",
+            "linux":
+            {
+                "args": 
+                [
+                    "-Wall",
+                    "-Wno-sign-compare",
+                    "-pthread",
+                    "-I", "${workspaceFolder}/include/",
+                    "-L", "${workspaceFolder}/bin/",
+                    "-g", "${workspaceFolder}/Application/main.cpp",
+                    "-l", "LockdownSSL",
+                    "-o", "${workspaceFolder}/Application/main.exe"
+                ]
+            },
+            "args": 
+            [
+                "-Wall",
+                "-Wno-sign-compare",
+                "-I", "${workspaceFolder}/include/",
+                "-L", "${workspaceFolder}/bin/",
+                "-g", "${workspaceFolder}/Application/main.cpp",
+                "-l", "LockdownSSL",
+                "-o", "${workspaceFolder}/Application/main.exe"
+            ]
+        },
+        /* ============================= */
+    ]
+}
